@@ -13,6 +13,7 @@ Color, accessibility, and design systems → frontend, tokens, and delivery. The
 ![Tiers](https://img.shields.io/badge/tiers-3-94104B?style=flat-square)
 ![Examples](https://img.shields.io/badge/live_examples-6-E61876?style=flat-square)
 ![Accessibility](https://img.shields.io/badge/a11y-WCAG_AA%2B-1f7a4d?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-111?style=flat-square)
 
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Material 3](https://img.shields.io/badge/Material_3-757575?style=flat-square&logo=materialdesign&logoColor=white)
@@ -219,7 +220,7 @@ Full documentation lives in [`design-system.html`](skills/examples/design-system
 ## Notes & license
 
 - **Fonts** — examples ship with a plain `system-ui` stack; **no fonts are bundled**. The original demos used a commercial typeface, deliberately removed. Point the font token at your own licensed font for production.
-- **Skill content** — curriculum text, references, and examples are yours to adapt. Add a `LICENSE` file to state your terms before sharing publicly.
+- **License** — [MIT](LICENSE). Use, adapt, and redistribute the curriculum, references, and examples freely.
 
 <div align="center">
 <br>
