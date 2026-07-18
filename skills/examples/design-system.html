@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System — Documentation</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        page:'var(--page)', ink:'var(--ink)','ink-soft':'var(--ink-soft)','ink-faint':'var(--ink-faint)',
+        surface:'var(--surface)','surface-muted':'var(--surface-muted)','surface-sunken':'var(--surface-sunken)',
+        line:'var(--line)',
+        brand:'var(--brand)','brand-strong':'var(--brand-strong)','brand-tint':'var(--brand-tint)','on-brand':'var(--on-brand)',
+        success:'var(--success)','success-tint':'var(--success-tint)',
+        warning:'var(--warning)','warning-tint':'var(--warning-tint)',
+        danger:'var(--danger)','danger-tint':'var(--danger-tint)',
+      },
+      borderRadius:{ 'xs':'4px','sm':'6px','md':'10px','lg':'14px','xl':'20px' },
+      boxShadow:{ lift:'0 1px 3px rgba(20,25,35,.07)' },
+      fontFamily:{
+        sans:['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'],
+        mono:['ui-monospace','SF Mono','SFMono-Regular','Roboto Mono','Menlo','Consolas','monospace'],
+      },
+    }}
+  }
+</script>
+<style>
+  :root{
+    --page:#f4f6f8; --ink:#1a1d23; --ink-soft:#565d68; --ink-faint:#8b929e;
+    --surface:#ffffff; --surface-muted:#f0f3f6; --surface-sunken:#e6eaef; --line:#dce1e7;
+    --brand:#E61876; --brand-strong:#c4145f; --brand-tint:#fce1ec; --on-brand:#ffffff;
+    --brand-gradient:linear-gradient(135deg,#E61876 0%,#94104B 100%);
+    --success:#1f7a4d; --success-tint:#dcefe4;
+    --warning:#a76a12; --warning-tint:#f6ecd9;
+    --danger:#b3382f; --danger-tint:#f6e0dd;
+  }
+  .dark{
+    --page:#0f1115; --ink:#edeff3; --ink-soft:#9aa2ae; --ink-faint:#6b7280;
+    --surface:#171a20; --surface-muted:#1e222a; --surface-sunken:#12151b; --line:#2a2f39;
+    --brand:#f24f92; --brand-strong:#f56ea6; --brand-tint:#2b1521; --on-brand:#ffffff;
+    --brand-gradient:linear-gradient(135deg,#f24f92 0%,#94104B 100%);
+    --success:#3fae76; --success-tint:#12281e;
+    --warning:#e0972f; --warning-tint:#2a2113;
+    --danger:#e2685d; --danger-tint:#2c1613;
+  }
+  body{ background:var(--page); }
+  [data-lucide], svg.lucide{ display:inline-block; vertical-align:-0.125em; }
+  .anchor-h{ scroll-margin-top:5rem; }
+  pre{ overflow-x:auto; }
+</style>
+</head>
+
+<body class="font-sans text-ink antialiased">
+
+<a href="#overview" class="sr-only focus:not-sr-only focus:fixed focus:z-50 focus:top-3 focus:left-3 focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-on-brand">Skip to content</a>
+
+<div class="flex min-h-screen">
+  <!-- sidebar -->
+  <div id="scrim" class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-60 -translate-x-full overflow-y-auto border-r border-line bg-surface transition-transform duration-200 motion-reduce:transition-none lg:static lg:translate-x-0">
+    <div class="flex h-14 items-center gap-2.5 border-b border-line px-5">
+      <span class="grid h-8 w-8 place-items-center rounded-md text-on-brand" style="background:var(--brand-gradient)"><i data-lucide="component" class="h-4 w-4"></i></span>
+      <span class="font-mono text-sm font-semibold tracking-tight">design-system</span>
+    </div>
+    <nav class="p-3 text-sm" aria-label="Docs">
+      <p class="px-3 pb-1 pt-3 font-mono text-[10px] uppercase tracking-wider text-ink-faint">Foundations</p>
+      <a href="#overview"   class="nav">Overview</a>
+      <a href="#color"      class="nav">Color</a>
+      <a href="#gradient"   class="nav">Gradient</a>
+      <a href="#type"       class="nav">Typography</a>
+      <a href="#radius"     class="nav">Radius &amp; spacing</a>
+      <a href="#elevation"  class="nav">Elevation</a>
+      <a href="#icons"      class="nav">Icons</a>
+      <p class="px-3 pb-1 pt-3 font-mono text-[10px] uppercase tracking-wider text-ink-faint">Components</p>
+      <a href="#buttons"    class="nav">Buttons</a>
+      <a href="#forms"      class="nav">Forms</a>
+      <a href="#feedback"   class="nav">Feedback</a>
+      <a href="#cards"      class="nav">Cards</a>
+      <p class="px-3 pb-1 pt-3 font-mono text-[10px] uppercase tracking-wider text-ink-faint">Guidelines</p>
+      <a href="#a11y"       class="nav">Accessibility</a>
+      <a href="#tokens"     class="nav">Token reference</a>
+    </nav>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <!-- topbar -->
+    <header class="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-surface/95 px-4 backdrop-blur">
+      <button id="menuBtn" aria-label="Open menu" class="grid h-9 w-9 place-items-center rounded-md border border-line text-ink-soft hover:bg-surface-muted lg:hidden"><i data-lucide="menu" class="h-4 w-4"></i></button>
+      <span class="font-semibold">Documentation</span>
+      <span class="rounded-full border border-line px-2 py-0.5 font-mono text-[11px] text-ink-soft">v1.0</span>
+      <button id="themeBtn" aria-label="Toggle dark mode" class="ml-auto grid h-9 w-9 place-items-center rounded-md border border-line text-ink-soft hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+        <span id="iconSun" class="hidden"><i data-lucide="sun" class="h-4 w-4"></i></span>
+        <span id="iconMoon"><i data-lucide="moon" class="h-4 w-4"></i></span>
+      </button>
+    </header>
+
+    <main class="mx-auto w-full max-w-4xl flex-1 px-5 py-10 sm:px-8">
+
+      <!-- OVERVIEW -->
+      <section id="overview" class="anchor-h">
+        <p class="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">Design system · v1.0</p>
+        <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">A token-driven, accessible UI kit</h1>
+        <p class="mt-3 max-w-2xl text-ink-soft">One CSS-variable token layer drives light and dark. Built with Tailwind CSS and the Lucide icon library. Every pattern is held to the accessibility and anti-AI-pattern guidelines below.</p>
+        <div class="mt-6 grid gap-3 sm:grid-cols-3">
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="flex items-center gap-2 text-sm font-semibold"><i data-lucide="palette" class="h-4 w-4 text-brand"></i> Token-driven</p><p class="mt-1 text-xs text-ink-soft">Colors, radii, type as variables — themeable with zero duplication.</p></div>
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="flex items-center gap-2 text-sm font-semibold"><i data-lucide="accessibility" class="h-4 w-4 text-brand"></i> Accessible</p><p class="mt-1 text-xs text-ink-soft">WCAG AA+ contrast, visible focus, keyboard-first, reduced-motion.</p></div>
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="flex items-center gap-2 text-sm font-semibold"><i data-lucide="shield-check" class="h-4 w-4 text-brand"></i> De-slopped</p><p class="mt-1 text-xs text-ink-soft">Flat surfaces, one icon family, a chosen palette — no AI tells.</p></div>
+        </div>
+      </section>
+
+      <!-- COLOR -->
+      <section id="color" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Color</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Brand is <span class="font-mono">#E61876</span> (magenta). Neutrals are biased cool; semantic colors are a separate, reserved system.</p>
+
+        <h3 class="mt-6 text-sm font-semibold">Brand ramp</h3>
+        <div id="brandRamp" class="mt-3 grid grid-cols-5 gap-2 sm:grid-cols-10"></div>
+
+        <h3 class="mt-6 text-sm font-semibold">Neutrals</h3>
+        <div id="neutrals" class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4"></div>
+
+        <h3 class="mt-6 text-sm font-semibold">Semantic <span class="font-normal text-ink-faint">— reserved; always paired with an icon + label</span></h3>
+        <div id="semantic" class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3"></div>
+      </section>
+
+      <!-- GRADIENT -->
+      <section id="gradient" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Gradient</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">The brand gradient (<span class="font-mono">--brand-gradient</span>) runs #E61876 → #94104B. Use it for hero/marketing surfaces only; keep flat <span class="font-mono">--brand</span> for interactive UI so contrast stays predictable.</p>
+        <div class="mt-4 overflow-hidden rounded-xl border border-line">
+          <div class="flex h-32 items-end p-5 text-white" style="background:var(--brand-gradient)"><b class="text-xl font-bold">Ship accessible UI, faster.</b></div>
+          <div class="bg-surface px-4 py-3"><code class="font-mono text-xs text-ink-soft">background: linear-gradient(135deg, #E61876 0%, #94104B 100%);</code></div>
+        </div>
+        <p class="mt-2 text-xs text-ink-faint">8 gradient variations are available in the brand-gradient chooser; this is option 01 (Diagonal).</p>
+      </section>
+
+      <!-- TYPOGRAPHY -->
+      <section id="type" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Typography</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">A native <span class="font-semibold">system-ui</span> sans stack (Regular 400 / Medium 500 / Bold 700) — swap in your own brand typeface. UI labels and data use a monospace stack.</p>
+        <div class="mt-4 grid gap-3 sm:grid-cols-3">
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="text-2xl" style="font-weight:400">Aa Rก</p><p class="mt-1 font-mono text-xs text-ink-faint">Regular · 400</p></div>
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="text-2xl" style="font-weight:500">Aa Rก</p><p class="mt-1 font-mono text-xs text-ink-faint">Medium · 500·600</p></div>
+          <div class="rounded-lg border border-line bg-surface p-4"><p class="text-2xl" style="font-weight:700">Aa Rก</p><p class="mt-1 font-mono text-xs text-ink-faint">Bold · 700</p></div>
+        </div>
+        <h3 class="mt-6 text-sm font-semibold">Type scale</h3>
+        <div class="mt-3 divide-y divide-line rounded-lg border border-line bg-surface">
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="text-4xl font-bold tracking-tight">Display</span><span class="font-mono text-xs text-ink-faint">36–44 · bold</span></div>
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="text-2xl font-bold">Heading 1</span><span class="font-mono text-xs text-ink-faint">24 · bold</span></div>
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="text-lg font-semibold">Heading 2</span><span class="font-mono text-xs text-ink-faint">18 · semibold</span></div>
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="text-base">Body</span><span class="font-mono text-xs text-ink-faint">16 · regular</span></div>
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="text-sm text-ink-soft">Small / secondary</span><span class="font-mono text-xs text-ink-faint">14 · regular</span></div>
+          <div class="flex items-baseline justify-between gap-4 px-4 py-3"><span class="font-mono text-xs text-ink-faint">Label / data · mono</span><span class="font-mono text-xs text-ink-faint">12 · mono</span></div>
+        </div>
+      </section>
+
+      <!-- RADIUS -->
+      <section id="radius" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Radius &amp; spacing</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">A radius scale mapped to element size — not one value everywhere. Spacing follows Tailwind's 4px scale.</p>
+        <div class="mt-4 flex flex-wrap items-end gap-4">
+          <div class="text-center"><div class="h-16 w-16 rounded-xs border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">xs · 4</p></div>
+          <div class="text-center"><div class="h-16 w-16 rounded-sm border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">sm · 6</p></div>
+          <div class="text-center"><div class="h-16 w-16 rounded-md border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">md · 10</p></div>
+          <div class="text-center"><div class="h-16 w-16 rounded-lg border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">lg · 14</p></div>
+          <div class="text-center"><div class="h-16 w-16 rounded-xl border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">xl · 20</p></div>
+          <div class="text-center"><div class="h-16 w-16 rounded-full border border-line bg-brand-tint"></div><p class="mt-1.5 font-mono text-xs text-ink-faint">full</p></div>
+        </div>
+      </section>
+
+      <!-- ELEVATION -->
+      <section id="elevation" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Elevation</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Two levels only. Most surfaces are flat (border-only); a single <span class="font-mono">shadow-lift</span> marks what genuinely floats (menus, popovers, dialogs).</p>
+        <div class="mt-4 flex flex-wrap gap-6">
+          <div class="text-center"><div class="grid h-20 w-32 place-items-center rounded-lg border border-line bg-surface text-xs text-ink-faint">flat</div><p class="mt-1.5 font-mono text-xs text-ink-faint">level 0 · border</p></div>
+          <div class="text-center"><div class="grid h-20 w-32 place-items-center rounded-lg border border-line bg-surface text-xs text-ink-faint shadow-lift">lift</div><p class="mt-1.5 font-mono text-xs text-ink-faint">level 1 · shadow-lift</p></div>
+        </div>
+      </section>
+
+      <!-- ICONS -->
+      <section id="icons" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Icons</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">One library: <span class="font-semibold">Lucide</span> (2px stroke, <span class="font-mono">currentColor</span>). Never emoji. Sizes 16 / 20 / 24. Decorative → <span class="font-mono">aria-hidden</span>; icon-only control → <span class="font-mono">aria-label</span>.</p>
+        <div class="mt-4 flex flex-wrap gap-4 rounded-lg border border-line bg-surface p-5 text-ink-soft">
+          <i data-lucide="search" class="h-5 w-5"></i><i data-lucide="bell" class="h-5 w-5"></i><i data-lucide="user" class="h-5 w-5"></i>
+          <i data-lucide="settings" class="h-5 w-5"></i><i data-lucide="check" class="h-5 w-5"></i><i data-lucide="circle-alert" class="h-5 w-5"></i>
+          <i data-lucide="trash-2" class="h-5 w-5"></i><i data-lucide="upload" class="h-5 w-5"></i><i data-lucide="arrow-right" class="h-5 w-5"></i>
+          <i data-lucide="chevron-down" class="h-5 w-5"></i><i data-lucide="eye" class="h-5 w-5"></i><i data-lucide="lock" class="h-5 w-5"></i>
+        </div>
+      </section>
+
+      <!-- BUTTONS -->
+      <section id="buttons" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Buttons</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Five style variants. 44px min touch target, visible focus ring, semantic red is separate from brand.</p>
+        <div class="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-line bg-surface p-6">
+          <button class="inline-flex min-h-11 items-center gap-2 rounded-md bg-brand px-4 text-sm font-medium text-on-brand hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"><i data-lucide="upload" class="h-4 w-4"></i> Primary</button>
+          <button class="inline-flex min-h-11 items-center gap-2 rounded-md border border-line bg-surface px-4 text-sm font-medium hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">Secondary</button>
+          <button class="inline-flex min-h-11 items-center gap-2 rounded-md px-4 text-sm font-medium text-brand hover:bg-brand-tint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">Ghost</button>
+          <button class="inline-flex min-h-11 items-center gap-2 rounded-md bg-danger px-4 text-sm font-medium text-white hover:brightness-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 focus-visible:ring-offset-surface"><i data-lucide="trash-2" class="h-4 w-4"></i> Destructive</button>
+          <button disabled class="inline-flex min-h-11 items-center gap-2 rounded-md bg-surface-muted px-4 text-sm font-medium text-ink-faint cursor-not-allowed"><i data-lucide="lock" class="h-4 w-4"></i> Disabled</button>
+        </div>
+      </section>
+
+      <!-- FORMS -->
+      <section id="forms" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Forms</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Every field has a label; errors pair an icon with text (never color alone) and set <span class="font-mono">aria-invalid</span>.</p>
+        <div class="mt-4 grid gap-5 rounded-lg border border-line bg-surface p-6 sm:grid-cols-2">
+          <div>
+            <label for="d-email" class="mb-1.5 block text-sm font-medium">Email</label>
+            <input id="d-email" type="email" placeholder="you@company.com" class="min-h-11 w-full rounded-md border border-line bg-surface px-3 text-sm placeholder:text-ink-faint focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+            <p class="mt-1.5 text-xs text-ink-faint">Help text sits below in muted ink.</p>
+          </div>
+          <div>
+            <label for="d-pw" class="mb-1.5 block text-sm font-medium">Password</label>
+            <input id="d-pw" type="password" value="123" aria-invalid="true" class="min-h-11 w-full rounded-md border border-danger bg-danger-tint px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+            <p class="mt-1.5 flex items-center gap-1.5 text-xs text-danger"><i data-lucide="circle-alert" class="h-3.5 w-3.5"></i> At least 8 characters.</p>
+          </div>
+          <div>
+            <label for="d-role" class="mb-1.5 block text-sm font-medium">Role</label>
+            <div class="relative">
+              <select id="d-role" class="min-h-11 w-full appearance-none rounded-md border border-line bg-surface px-3 pr-9 text-sm focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"><option>Designer</option><option>Developer</option></select>
+              <i data-lucide="chevron-down" class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <label class="flex items-center gap-2.5 text-sm"><input type="checkbox" checked class="h-4 w-4 rounded-xs border-line accent-brand"> Email me updates</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEEDBACK -->
+      <section id="feedback" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Feedback</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Alerts and badges use semantic tints with an icon + text so meaning survives without color.</p>
+        <div class="mt-4 space-y-3">
+          <div class="flex items-start gap-3 rounded-md bg-success-tint p-3.5 text-sm text-success"><i data-lucide="circle-check" class="mt-0.5 h-4 w-4 shrink-0"></i><p><span class="font-semibold">Success.</span> Your changes are live.</p></div>
+          <div class="flex items-start gap-3 rounded-md bg-warning-tint p-3.5 text-sm text-warning"><i data-lucide="triangle-alert" class="mt-0.5 h-4 w-4 shrink-0"></i><p><span class="font-semibold">Warning.</span> Review before you continue.</p></div>
+          <div class="flex items-start gap-3 rounded-md bg-danger-tint p-3.5 text-sm text-danger"><i data-lucide="circle-alert" class="mt-0.5 h-4 w-4 shrink-0"></i><p><span class="font-semibold">Error.</span> Something needs fixing.</p></div>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <span class="inline-flex items-center gap-1 rounded-xl bg-success-tint px-2.5 py-1 text-xs font-medium text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span> Passing</span>
+            <span class="inline-flex items-center gap-1 rounded-xl bg-warning-tint px-2.5 py-1 text-xs font-medium text-warning"><span class="h-1.5 w-1.5 rounded-full bg-warning"></span> Review</span>
+            <span class="inline-flex items-center gap-1 rounded-xl bg-brand-tint px-2.5 py-1 text-xs font-medium text-brand"><span class="h-1.5 w-1.5 rounded-full bg-brand"></span> Beta</span>
+            <span class="inline-flex items-center gap-1 rounded-xl bg-surface-muted px-2.5 py-1 text-xs font-medium text-ink-soft">Draft</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- CARDS -->
+      <section id="cards" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Cards</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">Flat, border-only surfaces. No single-side accent rail — a colored border must encode state, not decorate.</p>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2">
+          <div class="rounded-lg border border-line bg-surface p-5">
+            <p class="flex items-center gap-2 font-semibold"><i data-lucide="blocks" class="h-4 w-4 text-brand"></i> Component</p>
+            <p class="mt-1.5 text-sm text-ink-soft">Reusable, documented, versioned. Import once, use everywhere.</p>
+            <button class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline">View docs <i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+          </div>
+          <div class="rounded-lg border border-line bg-surface p-5">
+            <p class="flex items-center gap-2 font-semibold"><i data-lucide="gauge" class="h-4 w-4 text-brand"></i> Performant</p>
+            <p class="mt-1.5 text-sm text-ink-soft">42kb gzipped, system-font fallback, no runtime CSS-in-JS.</p>
+            <button class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand hover:underline">Benchmarks <i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- A11Y -->
+      <section id="a11y" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Accessibility &amp; anti-AI checklist</h2>
+        <div id="checklist" class="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2"></div>
+      </section>
+
+      <!-- TOKENS -->
+      <section id="tokens" class="anchor-h mt-14">
+        <h2 class="text-xl font-bold tracking-tight">Token reference</h2>
+        <p class="mt-1.5 text-sm text-ink-soft">The full CSS-variable layer. Dark values are flipped on <span class="font-mono">.dark</span>.</p>
+        <div class="mt-4 overflow-x-auto rounded-lg border border-line bg-surface">
+          <table class="w-full text-left text-sm">
+            <thead class="border-b border-line text-xs uppercase tracking-wider text-ink-faint"><tr><th class="px-4 py-3 font-medium">Token</th><th class="px-4 py-3 font-medium">Light</th><th class="px-4 py-3 font-medium">Dark</th><th class="px-4 py-3 font-medium">Usage</th></tr></thead>
+            <tbody id="tokenRows" class="divide-y divide-line font-mono text-xs"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="mt-14 border-t border-line pt-5 text-xs text-ink-faint">
+        <p class="font-mono">Design System v1.0 · Tailwind CSS · Lucide · system fonts · brand #E61876 · light + dark</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<style>
+  .nav{ display:block; border-radius:6px; padding:.4rem .75rem; color:var(--ink-soft); }
+  .nav:hover{ background:var(--surface-muted); color:var(--ink); }
+</style>
+
+<script>
+  const root=document.documentElement;
+  const applyTheme=d=>{root.classList.toggle('dark',d);document.getElementById('iconSun').classList.toggle('hidden',!d);document.getElementById('iconMoon').classList.toggle('hidden',d);};
+  const sidebar=document.getElementById('sidebar'), scrim=document.getElementById('scrim');
+  const openSide=o=>{sidebar.classList.toggle('-translate-x-full',!o);scrim.classList.toggle('hidden',!o);};
+  document.getElementById('menuBtn').addEventListener('click',()=>openSide(true));
+  scrim.addEventListener('click',()=>openSide(false));
+  sidebar.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ if(innerWidth<1024) openSide(false); }));
+
+  // data
+  const BRAND=[['50','#fce4ef'],['100','#fbc9de'],['200','#f79dc0'],['300','#f16aa0'],['400','#ec3d84'],['500','#E61876'],['600','#c4145f'],['700','#94104B'],['800','#7a0e3f'],['900','#5c0a30']];
+  const NEUTRAL=[['ink','#1a1d23','#edeff3','Primary text'],['ink-soft','#565d68','#9aa2ae','Secondary text'],['ink-faint','#8b929e','#6b7280','Muted / captions'],['surface','#ffffff','#171a20','Card / panel'],['surface-muted','#f0f3f6','#1e222a','Hover / inset'],['surface-sunken','#e6eaef','#12151b','Track / well'],['line','#dce1e7','#2a2f39','Borders'],['page','#f4f6f8','#0f1115','App background']];
+  const SEMANTIC=[['success','#1f7a4d','#3fae76','Positive / done'],['warning','#a76a12','#e0972f','Caution'],['danger','#b3382f','#e2685d','Error / destructive']];
+  const CHECK=['One token layer drives light + dark','Both themes designed (not a naive invert)','Contrast ≥ 4.5:1 body · 3:1 UI','Visible focus-visible on every control','Status = icon + text, not color alone','Keyboard-operable menus & dialogs','prefers-reduced-motion respected','Lucide only — zero emoji in UI','Chosen palette (#E61876), no default swatches','Flat cards — no decorative accent rails','Radius scale, not one value everywhere','Real copy — no lorem ipsum'];
+  const TOKENS=[['--brand','#E61876','#f24f92','Primary actions, links, focus'],['--brand-strong','#c4145f','#f56ea6','Hover / pressed'],['--brand-tint','#fce1ec','#2b1521','Subtle brand background'],['--on-brand','#ffffff','#ffffff','Text on brand'],['--brand-gradient','135° #E61876→#94104B','135° #f24f92→#94104B','Hero surfaces'],['--ink','#1a1d23','#edeff3','Primary text'],['--surface','#ffffff','#171a20','Card / panel'],['--line','#dce1e7','#2a2f39','Borders'],['--success','#1f7a4d','#3fae76','Positive'],['--warning','#a76a12','#e0972f','Caution'],['--danger','#b3382f','#e2685d','Error']];
+
+  const sw=(hex,label,sub)=>`<div class="rounded-lg border border-line bg-surface p-1.5"><div class="h-12 rounded-md" style="background:${hex}"></div><p class="mt-2 px-1 font-mono text-[11px] font-semibold">${label}</p><p class="px-1 pb-1 font-mono text-[10px] text-ink-faint">${sub}</p></div>`;
+  document.getElementById('brandRamp').innerHTML = BRAND.map(([n,h])=>`<div class="text-center"><div class="h-14 rounded-md border border-line" style="background:${h}"></div><p class="mt-1 font-mono text-[10px] ${n==='500'||n==='700'?'font-bold text-brand':'text-ink-faint'}">${n}</p><p class="font-mono text-[9px] text-ink-faint">${h}</p></div>`).join('');
+  document.getElementById('neutrals').innerHTML = NEUTRAL.map(([t,l,d,r])=>sw('var(--'+t+')','--'+t,r)).join('');
+  document.getElementById('semantic').innerHTML = SEMANTIC.map(([t,l,d,r])=>`<div class="rounded-lg border border-line bg-surface p-3"><div class="flex items-center gap-2"><span class="h-8 w-8 rounded-md" style="background:var(--${t})"></span><div><p class="font-mono text-xs font-semibold">--${t}</p><p class="font-mono text-[10px] text-ink-faint">${r}</p></div></div><div class="mt-2 h-6 rounded-sm" style="background:var(--${t}-tint)"></div><p class="mt-1 font-mono text-[10px] text-ink-faint">--${t}-tint</p></div>`).join('');
+  const chk='<i data-lucide="check" class="h-4 w-4 shrink-0 text-success"></i>';
+  document.getElementById('checklist').innerHTML = CHECK.map(t=>`<p class="flex items-center gap-2">${chk}<span class="text-ink-soft">${t}</span></p>`).join('');
+  document.getElementById('tokenRows').innerHTML = TOKENS.map(([t,l,d,u])=>`<tr class="hover:bg-surface-muted"><td class="px-4 py-2.5 text-ink">${t}</td><td class="px-4 py-2.5 text-ink-soft">${l}</td><td class="px-4 py-2.5 text-ink-soft">${d}</td><td class="px-4 py-2.5 font-sans text-ink-faint">${u}</td></tr>`).join('');
+
+  applyTheme(matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeBtn').addEventListener('click',()=>applyTheme(!root.classList.contains('dark')));
+  lucide.createIcons();
+</script>
+</body>
+</html>

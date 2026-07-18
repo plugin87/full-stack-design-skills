@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design System Dashboard — Skill Prototype</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  // design-tokens-system: Tailwind colors → CSS variables, one layer drives light+dark
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        page:'var(--page)', ink:'var(--ink)','ink-soft':'var(--ink-soft)','ink-faint':'var(--ink-faint)',
+        surface:'var(--surface)','surface-muted':'var(--surface-muted)','surface-sunken':'var(--surface-sunken)',
+        line:'var(--line)',
+        brand:'var(--brand)','brand-strong':'var(--brand-strong)','brand-tint':'var(--brand-tint)',
+        success:'var(--success)','success-tint':'var(--success-tint)',
+        warning:'var(--warning)','warning-tint':'var(--warning-tint)',
+        danger:'var(--danger)','danger-tint':'var(--danger-tint)',
+      },
+      borderRadius:{ 'xs':'4px','sm':'6px','md':'10px','lg':'14px','xl':'20px' },
+      boxShadow:{ lift:'0 1px 3px rgba(20,25,35,.07)' },
+      fontFamily:{
+        sans:['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'],
+        mono:['ui-monospace','SF Mono','SFMono-Regular','Roboto Mono','Menlo','Consolas','monospace'],
+      },
+    }}
+  }
+</script>
+<style>
+  :root{
+    --page:#f4f6f8; --ink:#1a1d23; --ink-soft:#565d68; --ink-faint:#8b929e;
+    --surface:#ffffff; --surface-muted:#f0f3f6; --surface-sunken:#e6eaef; --line:#dce1e7;
+    --brand:#E61876; --brand-strong:#c4145f; --brand-tint:#fce1ec;
+    --success:#1f7a4d; --success-tint:#dcefe4;
+    --warning:#a76a12; --warning-tint:#f6ecd9;
+    --danger:#b3382f; --danger-tint:#f6e0dd;
+    --grid:rgba(20,25,35,.08);
+  }
+  .dark{
+    --page:#0f1115; --ink:#edeff3; --ink-soft:#9aa2ae; --ink-faint:#6b7280;
+    --surface:#171a20; --surface-muted:#1e222a; --surface-sunken:#12151b; --line:#2a2f39;
+    --brand:#f24f92; --brand-strong:#f56ea6; --brand-tint:#2b1521;
+    --success:#3fae76; --success-tint:#12281e;
+    --warning:#e0972f; --warning-tint:#2a2113;
+    --danger:#e2685d; --danger-tint:#2c1613;
+    --grid:rgba(255,255,255,.07);
+  }
+  body{ background:var(--page); }
+  [data-lucide], svg.lucide{ display:inline-block; vertical-align:-0.125em; }
+  /* recessive chart grid + crisp marks (dataviz: thin marks, recessive grid) */
+  .grid-line{ stroke:var(--grid); stroke-width:1; }
+</style>
+</head>
+
+<body class="font-sans text-ink antialiased" data-palette="#E61876">
+
+<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:z-50 focus:top-3 focus:left-3
+   focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-white">Skip to content</a>
+
+<div class="flex min-h-screen">
+
+  <!-- ============ SIDEBAR (responsive-universal-design) ============ -->
+  <div id="scrim" class="fixed inset-0 z-30 hidden bg-black/50 lg:hidden"></div>
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full border-r border-line bg-surface
+    transition-transform duration-200 motion-reduce:transition-none lg:static lg:translate-x-0">
+    <div class="flex h-14 items-center gap-2.5 border-b border-line px-5">
+      <span class="grid h-8 w-8 place-items-center rounded-md bg-brand text-white"><i data-lucide="component" class="h-4 w-4"></i></span>
+      <span class="font-mono text-sm font-semibold tracking-tight">design-system</span>
+    </div>
+    <nav class="flex flex-col gap-0.5 p-3 text-sm" aria-label="Primary">
+      <a href="#" aria-current="page" class="flex items-center gap-3 rounded-md bg-brand-tint px-3 py-2 font-medium text-brand">
+        <i data-lucide="layout-dashboard" class="h-4 w-4"></i> Overview</a>
+      <a href="#" class="flex items-center gap-3 rounded-md px-3 py-2 text-ink-soft hover:bg-surface-muted hover:text-ink">
+        <i data-lucide="blocks" class="h-4 w-4"></i> Components</a>
+      <a href="#" class="flex items-center gap-3 rounded-md px-3 py-2 text-ink-soft hover:bg-surface-muted hover:text-ink">
+        <i data-lucide="accessibility" class="h-4 w-4"></i> Accessibility</a>
+      <a href="#" class="flex items-center gap-3 rounded-md px-3 py-2 text-ink-soft hover:bg-surface-muted hover:text-ink">
+        <i data-lucide="gauge" class="h-4 w-4"></i> Performance</a>
+      <a href="#" class="flex items-center gap-3 rounded-md px-3 py-2 text-ink-soft hover:bg-surface-muted hover:text-ink">
+        <i data-lucide="git-merge" class="h-4 w-4"></i> Deploys</a>
+      <a href="#" class="flex items-center gap-3 rounded-md px-3 py-2 text-ink-soft hover:bg-surface-muted hover:text-ink">
+        <i data-lucide="palette" class="h-4 w-4"></i> Tokens</a>
+    </nav>
+    <div class="mx-3 mt-2 rounded-md border border-line bg-surface-muted p-3">
+      <p class="flex items-center gap-1.5 text-xs font-medium"><i data-lucide="shield-check" class="h-3.5 w-3.5 text-brand"></i> De-slop passing</p>
+      <p class="mt-1 text-xs text-ink-faint">18/18 anti-ai checks · 15/15 skills</p>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN COLUMN ============ -->
+  <div class="flex min-w-0 flex-1 flex-col">
+
+    <!-- topbar -->
+    <header class="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-line bg-surface/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-surface/80">
+      <button id="menuBtn" aria-label="Open menu" class="grid h-9 w-9 place-items-center rounded-md border border-line text-ink-soft hover:bg-surface-muted lg:hidden">
+        <i data-lucide="menu" class="h-4 w-4"></i>
+      </button>
+      <div class="relative hidden max-w-xs flex-1 sm:block">
+        <i data-lucide="search" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+        <input type="search" placeholder="Search components, tokens…" aria-label="Search"
+          class="h-9 w-full rounded-md border border-line bg-surface pl-9 pr-3 text-sm placeholder:text-ink-faint
+          focus:border-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+      </div>
+      <div class="ml-auto flex items-center gap-1.5">
+        <button aria-label="Notifications" class="relative grid h-9 w-9 place-items-center rounded-md border border-line text-ink-soft hover:bg-surface-muted">
+          <i data-lucide="bell" class="h-4 w-4"></i>
+          <span class="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-danger"></span>
+        </button>
+        <button id="themeBtn" aria-label="Toggle dark mode" class="grid h-9 w-9 place-items-center rounded-md border border-line text-ink-soft hover:bg-surface-muted
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface">
+          <span id="iconSun" class="hidden"><i data-lucide="sun" class="h-4 w-4"></i></span>
+          <span id="iconMoon"><i data-lucide="moon" class="h-4 w-4"></i></span>
+        </button>
+        <button class="ml-1 flex items-center gap-2 rounded-md py-1 pl-1 pr-2 hover:bg-surface-muted">
+          <span class="grid h-7 w-7 place-items-center rounded-full bg-brand text-xs font-semibold text-white">PS</span>
+          <i data-lucide="chevron-down" class="h-4 w-4 text-ink-faint"></i>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
+
+      <!-- page header -->
+      <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p class="font-mono text-xs uppercase tracking-[0.14em] text-ink-faint">Overview · updated just now</p>
+          <h1 class="mt-1.5 text-2xl font-bold tracking-tight">Design system health</h1>
+        </div>
+        <div class="flex items-center gap-1 rounded-md border border-line bg-surface p-0.5 text-sm">
+          <button class="rounded-sm px-3 py-1.5 text-ink-soft hover:bg-surface-muted">7d</button>
+          <button class="rounded-sm bg-brand-tint px-3 py-1.5 font-medium text-brand">12w</button>
+          <button class="rounded-sm px-3 py-1.5 text-ink-soft hover:bg-surface-muted">1y</button>
+        </div>
+      </div>
+
+      <!-- KPI ROW (design-fundamentals · dataviz) -->
+      <div class="mb-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div class="rounded-lg border border-line bg-surface p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-medium text-ink-soft">Components</p>
+            <span class="flex items-center gap-1 text-xs font-medium text-success"><i data-lucide="trending-up" class="h-3.5 w-3.5"></i> 4.1%</span>
+          </div>
+          <p class="mt-1 text-2xl font-bold tabular-nums">128</p>
+          <svg class="mt-2 h-8 w-full text-brand" data-spark="118,120,119,122,124,123,127,128" viewBox="0 0 120 32" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-medium text-ink-soft">A11y score</p>
+            <span class="flex items-center gap-1 text-xs font-medium text-success"><i data-lucide="trending-up" class="h-3.5 w-3.5"></i> 6 pts</span>
+          </div>
+          <p class="mt-1 text-2xl font-bold tabular-nums">96<span class="text-base font-medium text-ink-faint">/100</span></p>
+          <svg class="mt-2 h-8 w-full text-brand" data-spark="84,86,85,88,90,92,94,96" viewBox="0 0 120 32" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-medium text-ink-soft">Bundle (gz)</p>
+            <span class="flex items-center gap-1 text-xs font-medium text-success"><i data-lucide="trending-down" class="h-3.5 w-3.5"></i> 3.2%</span>
+          </div>
+          <p class="mt-1 text-2xl font-bold tabular-nums">42<span class="text-base font-medium text-ink-faint">kb</span></p>
+          <svg class="mt-2 h-8 w-full text-brand" data-spark="48,47,47,45,46,44,43,42" viewBox="0 0 120 32" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+        <div class="rounded-lg border border-line bg-surface p-4">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-medium text-ink-soft">Adoption</p>
+            <span class="flex items-center gap-1 text-xs font-medium text-warning"><i data-lucide="minus" class="h-3.5 w-3.5"></i> 0.4%</span>
+          </div>
+          <p class="mt-1 text-2xl font-bold tabular-nums">81<span class="text-base font-medium text-ink-faint">%</span></p>
+          <svg class="mt-2 h-8 w-full text-brand" data-spark="76,78,79,80,80,81,81,81" viewBox="0 0 120 32" preserveAspectRatio="none" aria-hidden="true"></svg>
+        </div>
+      </div>
+
+      <!-- CHART + A11Y ROW -->
+      <div class="mb-4 grid gap-4 lg:grid-cols-3">
+        <!-- health area chart (dataviz: single series, recessive grid, endpoint emphasis, hover) -->
+        <div class="rounded-lg border border-line bg-surface p-5 lg:col-span-2">
+          <div class="mb-1 flex items-start justify-between">
+            <div>
+              <h2 class="text-sm font-semibold">Health score</h2>
+              <p class="text-xs text-ink-faint">composite of a11y · perf · adoption · de-slop</p>
+            </div>
+            <span class="font-mono text-[11px] text-ink-faint">dataviz · design-systems-architecture</span>
+          </div>
+          <div id="healthChart" class="relative mt-2"></div>
+        </div>
+
+        <!-- accessibility issues by severity (status colors + icon + label) -->
+        <div class="rounded-lg border border-line bg-surface p-5">
+          <div class="mb-3 flex items-start justify-between">
+            <h2 class="text-sm font-semibold">Open a11y issues</h2>
+            <span class="font-mono text-[11px] text-ink-faint">web-accessibility-a11y</span>
+          </div>
+          <ul class="space-y-3 text-sm">
+            <li>
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-2 text-danger"><i data-lucide="octagon-alert" class="h-4 w-4"></i> Critical</span>
+                <span class="font-semibold tabular-nums">2</span>
+              </div>
+              <div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-sunken"><div class="h-full rounded-full bg-danger" style="width:12%"></div></div>
+            </li>
+            <li>
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-2 text-warning"><i data-lucide="triangle-alert" class="h-4 w-4"></i> Serious</span>
+                <span class="font-semibold tabular-nums">5</span>
+              </div>
+              <div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-sunken"><div class="h-full rounded-full bg-warning" style="width:30%"></div></div>
+            </li>
+            <li>
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-2 text-ink-soft"><i data-lucide="info" class="h-4 w-4"></i> Moderate</span>
+                <span class="font-semibold tabular-nums">9</span>
+              </div>
+              <div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-sunken"><div class="h-full rounded-full bg-ink-faint" style="width:54%"></div></div>
+            </li>
+            <li>
+              <div class="flex items-center justify-between">
+                <span class="flex items-center gap-2 text-ink-faint"><i data-lucide="circle-dot" class="h-4 w-4"></i> Minor</span>
+                <span class="font-semibold tabular-nums">16</span>
+              </div>
+              <div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-surface-sunken"><div class="h-full rounded-full bg-line" style="width:96%"></div></div>
+            </li>
+          </ul>
+          <p class="mt-4 flex items-center gap-1.5 text-xs text-ink-faint"><i data-lucide="lightbulb" class="h-3.5 w-3.5"></i> severity shown as icon + label, not color alone (inclusive-design-patterns)</p>
+        </div>
+      </div>
+
+      <!-- CWV + ADOPTION ROW -->
+      <div class="mb-4 grid gap-4 lg:grid-cols-3">
+        <!-- Core Web Vitals (web-performance-optimization): 3 status tiles, no dual-axis -->
+        <div class="rounded-lg border border-line bg-surface p-5">
+          <div class="mb-3 flex items-start justify-between">
+            <h2 class="text-sm font-semibold">Core Web Vitals</h2>
+            <span class="font-mono text-[11px] text-ink-faint">web-performance</span>
+          </div>
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between rounded-md bg-success-tint px-3 py-2.5">
+              <span class="flex items-center gap-2 text-sm font-medium text-success"><i data-lucide="circle-check" class="h-4 w-4"></i> LCP</span>
+              <span class="font-mono text-sm font-semibold text-success tabular-nums">1.9 s</span>
+            </div>
+            <div class="flex items-center justify-between rounded-md bg-success-tint px-3 py-2.5">
+              <span class="flex items-center gap-2 text-sm font-medium text-success"><i data-lucide="circle-check" class="h-4 w-4"></i> INP</span>
+              <span class="font-mono text-sm font-semibold text-success tabular-nums">120 ms</span>
+            </div>
+            <div class="flex items-center justify-between rounded-md bg-warning-tint px-3 py-2.5">
+              <span class="flex items-center gap-2 text-sm font-medium text-warning"><i data-lucide="triangle-alert" class="h-4 w-4"></i> CLS</span>
+              <span class="font-mono text-sm font-semibold text-warning tabular-nums">0.14</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- component adoption (magnitude bars, single hue) -->
+        <div class="rounded-lg border border-line bg-surface p-5 lg:col-span-2">
+          <div class="mb-4 flex items-start justify-between">
+            <h2 class="text-sm font-semibold">Top component adoption</h2>
+            <span class="font-mono text-[11px] text-ink-faint">component-library-mastery · figma-expert-workflows · design-to-code-workflow</span>
+          </div>
+          <div id="adoption" class="space-y-3.5 text-sm"></div>
+        </div>
+      </div>
+
+      <!-- DEPLOYS + TOKENS ROW -->
+      <div class="grid gap-4 lg:grid-cols-3">
+        <!-- deploy feed (deployment-devops · qa-testing) -->
+        <div class="rounded-lg border border-line bg-surface p-5 lg:col-span-2">
+          <div class="mb-3 flex items-start justify-between">
+            <h2 class="text-sm font-semibold">Recent deploys</h2>
+            <span class="font-mono text-[11px] text-ink-faint">deployment-devops-workflow · qa-testing-visual-regression</span>
+          </div>
+          <ul id="deploys" class="divide-y divide-line text-sm"></ul>
+        </div>
+
+        <!-- token snapshot (design-tokens-system · css-styling-pixel-perfect) -->
+        <div class="rounded-lg border border-line bg-surface p-5">
+          <div class="mb-3 flex items-start justify-between">
+            <h2 class="text-sm font-semibold">Token snapshot</h2>
+            <span class="font-mono text-[11px] text-ink-faint">design-tokens</span>
+          </div>
+          <div class="grid grid-cols-6 gap-1.5">
+            <div class="h-8 rounded-xs bg-ink" title="--ink"></div>
+            <div class="h-8 rounded-xs bg-ink-soft" title="--ink-soft"></div>
+            <div class="h-8 rounded-xs bg-brand" title="--brand"></div>
+            <div class="h-8 rounded-xs bg-success" title="--success"></div>
+            <div class="h-8 rounded-xs bg-warning" title="--warning"></div>
+            <div class="h-8 rounded-xs bg-danger" title="--danger"></div>
+          </div>
+          <dl class="mt-4 space-y-2 font-mono text-xs">
+            <div class="flex justify-between"><dt class="text-ink-faint">--brand</dt><dd>#E61876</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-faint">radius</dt><dd>4·6·10·14·20</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-faint">elevation</dt><dd>flat · lift</dd></div>
+            <div class="flex justify-between"><dt class="text-ink-faint">themes</dt><dd>light · dark</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <footer class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4 text-xs text-ink-faint">
+        <p class="flex items-center gap-1.5 font-mono"><i data-lucide="shield-check" class="h-3.5 w-3.5"></i> anti-ai-design-patterns · responsive-universal-design · frontend-framework-guide · design-fundamentals</p>
+        <p class="font-mono">Tailwind · Lucide · token-driven · 15/15 skills</p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<script>
+  const root = document.documentElement;
+  const applyTheme = d => {
+    root.classList.toggle('dark', d);
+    document.getElementById('iconSun').classList.toggle('hidden', !d);
+    document.getElementById('iconMoon').classList.toggle('hidden', d);
+    drawCharts(); // redraw so gradient/endpoint colors follow theme
+  };
+
+  // sidebar (mobile off-canvas)
+  const sidebar = document.getElementById('sidebar'), scrim = document.getElementById('scrim');
+  const openSide = o => { sidebar.classList.toggle('-translate-x-full', !o); scrim.classList.toggle('hidden', !o); };
+  document.getElementById('menuBtn').addEventListener('click', () => openSide(true));
+  scrim.addEventListener('click', () => openSide(false));
+
+  // ---- data ----
+  const HEALTH = [72,70,74,78,76,81,83,80,85,88,90,92];
+  const WEEKS = HEALTH.map((_,i)=>'W'+(i+1));
+  const ADOPTION = [['Button',98],['Input',94],['Card',89],['Modal',72],['Table',61],['Chart',44]];
+  const DEPLOYS = [
+    ['ok','v2.4.1 · publish tokens','12 min ago','check'],
+    ['ok','v2.4.0 · dark-mode audit','2 h ago','check'],
+    ['warn','v2.3.9 · 2 snapshots changed','5 h ago','triangle-alert'],
+    ['ok','v2.3.8 · a11y focus rings','1 d ago','check'],
+    ['fail','v2.3.7 · rolled back','1 d ago','circle-x'],
+  ];
+
+  // ---- sparklines (single series, endpoint dot; dataviz mark specs) ----
+  function drawSparks(){
+    document.querySelectorAll('[data-spark]').forEach(svg=>{
+      const d = svg.dataset.spark.split(',').map(Number);
+      const W=120,H=32,p=3, min=Math.min(...d), max=Math.max(...d), span=(max-min)||1;
+      const x=i=>p+i/(d.length-1)*(W-2*p), y=v=>H-p-(v-min)/span*(H-2*p);
+      const pts=d.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+      const lx=x(d.length-1).toFixed(1), ly=y(d[d.length-1]).toFixed(1);
+      svg.innerHTML=`<polyline points="${pts}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${lx}" cy="${ly}" r="2.6" fill="currentColor"/>`;
+    });
+  }
+
+  // ---- health area chart (single series, recessive grid, endpoint emphasis, hover crosshair) ----
+  function drawHealth(){
+    const host=document.getElementById('healthChart'); if(!host) return;
+    const W=host.clientWidth||640, H=200, L=34,R=14,T=12,B=24, iW=W-L-R, iH=H-T-B;
+    const d=HEALTH, min=68, max=96, span=max-min;
+    const x=i=>L+i/(d.length-1)*iW, y=v=>T+(1-(v-min)/span)*iH;
+    const line=d.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    const area=`M${x(0).toFixed(1)},${(T+iH).toFixed(1)} L`+line.replace(/ /g,' L')+` L${x(d.length-1).toFixed(1)},${(T+iH).toFixed(1)} Z`;
+    // y gridlines at 70/80/90
+    let grid=''; [70,80,90].forEach(v=>{const gy=y(v).toFixed(1); grid+=`<line class="grid-line" x1="${L}" y1="${gy}" x2="${W-R}" y2="${gy}"/><text x="8" y="${(+gy+3).toFixed(1)}" fill="var(--ink-faint)" font-size="10" font-family="ui-monospace,monospace">${v}</text>`;});
+    let xlab=''; d.forEach((v,i)=>{ if(i%2===0) xlab+=`<text x="${x(i).toFixed(1)}" y="${H-6}" fill="var(--ink-faint)" font-size="10" text-anchor="middle" font-family="ui-monospace,monospace">${WEEKS[i]}</text>`;});
+    const lx=x(d.length-1).toFixed(1), ly=y(d[d.length-1]).toFixed(1);
+    host.innerHTML=`
+      <svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" class="text-brand" role="img" aria-label="Health score, 12 weeks, rising 72 to 92">
+        ${grid}
+        <path d="${area}" fill="currentColor" fill-opacity="0.12"/>
+        <polyline points="${line}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${lx}" cy="${ly}" r="4" fill="currentColor"/>
+        <text x="${(+lx-2).toFixed(1)}" y="${(+ly-9).toFixed(1)}" fill="var(--ink)" font-size="11" font-weight="700" text-anchor="end">92</text>
+        ${xlab}
+        <g id="hv" style="opacity:0"><line class="grid-line" id="hvline" x1="0" y1="${T}" x2="0" y2="${T+iH}" stroke="var(--brand)" stroke-dasharray="3 3"/><circle id="hvdot" r="4" fill="var(--brand)" stroke="var(--surface)" stroke-width="2"/></g>
+        <rect id="hit" x="${L}" y="${T}" width="${iW}" height="${iH}" fill="transparent"/>
+      </svg>
+      <div id="tip" class="pointer-events-none absolute hidden rounded-md border border-line bg-surface px-2.5 py-1.5 text-xs shadow-lift"></div>`;
+    const svg=host.querySelector('svg'), hit=host.querySelector('#hit'), hv=host.querySelector('#hv'),
+          hvline=host.querySelector('#hvline'), hvdot=host.querySelector('#hvdot'), tip=host.querySelector('#tip');
+    const px=i=>x(i), py=i=>y(d[i]);
+    hit.addEventListener('mousemove', e=>{
+      const r=svg.getBoundingClientRect(), sx=(e.clientX-r.left)*(W/r.width);
+      let i=Math.round((sx-L)/iW*(d.length-1)); i=Math.max(0,Math.min(d.length-1,i));
+      hv.style.opacity=1; hvline.setAttribute('x1',px(i)); hvline.setAttribute('x2',px(i));
+      hvdot.setAttribute('cx',px(i)); hvdot.setAttribute('cy',py(i));
+      tip.classList.remove('hidden');
+      tip.innerHTML=`<span class="font-mono text-ink-faint">${WEEKS[i]}</span> · <span class="font-semibold tabular-nums">${d[i]}</span>`;
+      const tx=px(i)/W*r.width, ty=py(i)/H*r.height;
+      tip.style.left=Math.min(r.width-90,Math.max(0,tx-30))+'px'; tip.style.top=(ty-40)+'px';
+    });
+    hit.addEventListener('mouseleave', ()=>{ hv.style.opacity=0; tip.classList.add('hidden'); });
+  }
+
+  function drawAdoption(){
+    const host=document.getElementById('adoption'); if(!host) return;
+    host.innerHTML=ADOPTION.map(([n,p])=>`
+      <div title="${n}: ${p}% of teams">
+        <div class="mb-1 flex items-center justify-between"><span class="font-mono text-xs">${n}</span><span class="font-semibold tabular-nums text-ink-soft">${p}%</span></div>
+        <div class="h-2 overflow-hidden rounded-full bg-surface-sunken"><div class="h-full rounded-full bg-brand" style="width:${p}%"></div></div>
+      </div>`).join('');
+  }
+
+  function drawDeploys(){
+    const host=document.getElementById('deploys'); if(!host) return;
+    const tone={ok:'text-success',warn:'text-warning',fail:'text-danger'};
+    host.innerHTML=DEPLOYS.map(([s,label,time,icon])=>`
+      <li class="flex items-center gap-3 py-2.5">
+        <i data-lucide="${icon}" class="h-4 w-4 shrink-0 ${tone[s]}"></i>
+        <span class="min-w-0 flex-1 truncate font-mono text-xs">${label}</span>
+        <span class="shrink-0 text-xs text-ink-faint">${time}</span>
+      </li>`).join('');
+    lucide.createIcons();
+  }
+
+  function drawCharts(){ drawSparks(); drawHealth(); }
+
+  // init
+  drawAdoption(); drawDeploys();
+  applyTheme(matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeBtn').addEventListener('click', ()=>applyTheme(!root.classList.contains('dark')));
+  lucide.createIcons();
+  let rt; addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(drawHealth,150); });
+</script>
+</body>
+</html>

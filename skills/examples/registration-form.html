@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create account — Registration Prototype</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      colors: {
+        page:'var(--page)', ink:'var(--ink)','ink-soft':'var(--ink-soft)','ink-faint':'var(--ink-faint)',
+        surface:'var(--surface)','surface-muted':'var(--surface-muted)','surface-sunken':'var(--surface-sunken)',
+        line:'var(--line)',
+        brand:'var(--brand)','brand-strong':'var(--brand-strong)','brand-tint':'var(--brand-tint)','on-brand':'var(--on-brand)',
+        success:'var(--success)','success-tint':'var(--success-tint)',
+        warning:'var(--warning)','warning-tint':'var(--warning-tint)',
+        danger:'var(--danger)','danger-tint':'var(--danger-tint)',
+      },
+      borderRadius:{ 'xs':'4px','sm':'6px','md':'10px','lg':'14px','xl':'20px' },
+      boxShadow:{ lift:'0 1px 3px rgba(20,25,35,.07)', pop:'0 10px 40px rgba(20,25,35,.12)' },
+      fontFamily:{
+        sans:['ui-sans-serif','system-ui','-apple-system','Segoe UI','Roboto','Helvetica Neue','Arial','sans-serif'],
+        mono:['ui-monospace','SF Mono','SFMono-Regular','Roboto Mono','Menlo','Consolas','monospace'],
+      },
+    }}
+  }
+</script>
+<style>
+  :root{
+    --page:#f4f6f8; --ink:#1a1d23; --ink-soft:#565d68; --ink-faint:#8b929e;
+    --surface:#ffffff; --surface-muted:#f0f3f6; --surface-sunken:#e6eaef; --line:#dce1e7;
+    --brand:#E61876; --brand-strong:#c4145f; --brand-tint:#fce1ec; --on-brand:#ffffff;
+    --brand-gradient:linear-gradient(135deg,#E61876 0%,#94104B 100%);
+    --success:#1f7a4d; --success-tint:#dcefe4;
+    --warning:#a76a12; --warning-tint:#f6ecd9;
+    --danger:#b3382f; --danger-tint:#f6e0dd;
+  }
+  .dark{
+    --page:#0f1115; --ink:#edeff3; --ink-soft:#9aa2ae; --ink-faint:#6b7280;
+    --surface:#171a20; --surface-muted:#1e222a; --surface-sunken:#12151b; --line:#2a2f39;
+    --brand:#f24f92; --brand-strong:#f56ea6; --brand-tint:#2b1521; --on-brand:#ffffff;
+    --brand-gradient:linear-gradient(135deg,#f24f92 0%,#94104B 100%);
+    --success:#3fae76; --success-tint:#12281e;
+    --warning:#e0972f; --warning-tint:#2a2113;
+    --danger:#e2685d; --danger-tint:#2c1613;
+  }
+  body{ background:var(--page); }
+  [data-lucide], svg.lucide{ display:inline-block; vertical-align:-0.125em; }
+</style>
+</head>
+
+<body class="min-h-screen font-sans text-ink antialiased">
+
+<a href="#form" class="sr-only focus:not-sr-only focus:fixed focus:z-50 focus:top-3 focus:left-3
+   focus:rounded-md focus:bg-brand focus:px-4 focus:py-2 focus:text-on-brand">Skip to form</a>
+
+<!-- theme toggle, floating top-right -->
+<button id="themeBtn" aria-label="Toggle dark mode" class="fixed right-4 top-4 z-20 grid h-9 w-9 place-items-center rounded-md
+  border border-line bg-surface text-ink-soft hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2
+  focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page">
+  <span id="iconSun" class="hidden"><i data-lucide="sun" class="h-4 w-4"></i></span>
+  <span id="iconMoon"><i data-lucide="moon" class="h-4 w-4"></i></span>
+</button>
+
+<div class="mx-auto grid min-h-screen max-w-6xl lg:grid-cols-2">
+
+  <!-- ===== LEFT: brand panel (gradient 01 · Diagonal 135°, the single bold accent surface) ===== -->
+  <aside class="relative hidden flex-col justify-between p-10 text-on-brand lg:flex" style="background:var(--brand-gradient)">
+    <div class="flex items-center gap-2.5">
+      <span class="grid h-9 w-9 place-items-center rounded-md bg-white/15"><i data-lucide="component" class="h-5 w-5"></i></span>
+      <span class="font-mono text-sm font-semibold tracking-tight">design-system</span>
+    </div>
+
+    <div class="max-w-sm">
+      <h1 class="text-3xl font-bold leading-tight tracking-tight text-balance">Ship accessible UI, faster.</h1>
+      <p class="mt-3 text-sm/relaxed text-on-brand/80">Join the team building a token-driven component library that passes WCAG AA+ out of the box.</p>
+      <ul class="mt-8 space-y-4 text-sm">
+        <li class="flex items-start gap-3">
+          <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-white/15"><i data-lucide="shield-check" class="h-4 w-4"></i></span>
+          <span><span class="font-semibold">Accessible by default</span><br><span class="text-on-brand/75">Contrast, focus rings, and ARIA baked into every component.</span></span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-white/15"><i data-lucide="zap" class="h-4 w-4"></i></span>
+          <span><span class="font-semibold">Fast by default</span><br><span class="text-on-brand/75">42kb gzipped, no runtime CSS-in-JS overhead.</span></span>
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-md bg-white/15"><i data-lucide="palette" class="h-4 w-4"></i></span>
+          <span><span class="font-semibold">Themeable</span><br><span class="text-on-brand/75">One token layer drives light and dark, zero duplication.</span></span>
+        </li>
+      </ul>
+    </div>
+
+    <p class="font-mono text-xs text-on-brand/60">Trusted by 128 components · 15/15 skills</p>
+  </aside>
+
+  <!-- ===== RIGHT: the form ===== -->
+  <main class="flex items-center justify-center px-5 py-12 sm:px-10">
+    <div id="formWrap" class="w-full max-w-md">
+
+      <!-- mobile logo -->
+      <div class="mb-8 flex items-center gap-2.5 lg:hidden">
+        <span class="grid h-8 w-8 place-items-center rounded-md bg-brand text-on-brand"><i data-lucide="component" class="h-4 w-4"></i></span>
+        <span class="font-mono text-sm font-semibold tracking-tight">design-system</span>
+      </div>
+
+      <h2 class="text-2xl font-bold tracking-tight">Create your account</h2>
+      <p class="mt-1.5 text-sm text-ink-soft">Already have one?
+        <a href="#" class="font-medium text-brand hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page rounded-xs">Sign in</a>
+      </p>
+
+      <form id="form" class="mt-7 space-y-4" novalidate>
+        <!-- full name -->
+        <div>
+          <label for="name" class="mb-1.5 block text-sm font-medium">Full name</label>
+          <div class="relative">
+            <i data-lucide="user" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+            <input id="name" name="name" type="text" autocomplete="name" placeholder="Ada Lovelace"
+              class="field pl-9" aria-describedby="name-err">
+          </div>
+          <p id="name-err" class="err hidden"></p>
+        </div>
+
+        <!-- email -->
+        <div>
+          <label for="email" class="mb-1.5 block text-sm font-medium">Work email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com"
+              class="field pl-9" aria-describedby="email-err">
+          </div>
+          <p id="email-err" class="err hidden"></p>
+        </div>
+
+        <!-- password -->
+        <div>
+          <label for="password" class="mb-1.5 block text-sm font-medium">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+            <input id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters"
+              class="field px-9" aria-describedby="pw-err pw-meter">
+            <button type="button" id="pwToggle" aria-label="Show password" aria-pressed="false"
+              class="absolute right-2 top-1/2 grid h-7 w-7 -translate-y-1/2 place-items-center rounded-sm text-ink-faint hover:bg-surface-muted
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+              <span id="pwEye"><i data-lucide="eye" class="h-4 w-4"></i></span>
+              <span id="pwEyeOff" class="hidden"><i data-lucide="eye-off" class="h-4 w-4"></i></span>
+            </button>
+          </div>
+          <!-- strength meter (status colors + text label, not color alone) -->
+          <div id="pw-meter" class="mt-2 flex items-center gap-2" aria-live="polite">
+            <div class="flex flex-1 gap-1">
+              <span data-seg="1" class="h-1.5 flex-1 rounded-full bg-surface-sunken"></span>
+              <span data-seg="2" class="h-1.5 flex-1 rounded-full bg-surface-sunken"></span>
+              <span data-seg="3" class="h-1.5 flex-1 rounded-full bg-surface-sunken"></span>
+              <span data-seg="4" class="h-1.5 flex-1 rounded-full bg-surface-sunken"></span>
+            </div>
+            <span id="pwLabel" class="w-14 text-right text-xs font-medium text-ink-faint">—</span>
+          </div>
+          <p id="pw-err" class="err hidden"></p>
+        </div>
+
+        <!-- confirm -->
+        <div>
+          <label for="confirm" class="mb-1.5 block text-sm font-medium">Confirm password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint"></i>
+            <input id="confirm" name="confirm" type="password" autocomplete="new-password" placeholder="Re-enter password"
+              class="field pl-9" aria-describedby="confirm-err">
+          </div>
+          <p id="confirm-err" class="err hidden"></p>
+        </div>
+
+        <!-- terms -->
+        <div>
+          <label class="flex items-start gap-2.5 text-sm">
+            <input id="terms" name="terms" type="checkbox" class="mt-0.5 h-4 w-4 rounded-xs border-line accent-brand
+              focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page"
+              aria-describedby="terms-err">
+            <span class="text-ink-soft">I agree to the
+              <a href="#" class="font-medium text-brand hover:underline">Terms</a> and
+              <a href="#" class="font-medium text-brand hover:underline">Privacy Policy</a>.</span>
+          </label>
+          <p id="terms-err" class="err mt-1.5 hidden"></p>
+        </div>
+
+        <button type="submit" id="submit"
+          class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-brand px-4 text-sm font-semibold text-on-brand
+          hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2
+          focus-visible:ring-offset-page motion-safe:transition-colors">
+          Create account <i data-lucide="arrow-right" class="h-4 w-4"></i>
+        </button>
+
+        <div class="relative py-1 text-center">
+          <span class="relative z-10 bg-page px-3 text-xs text-ink-faint">or</span>
+          <span class="absolute inset-x-0 top-1/2 h-px bg-line"></span>
+        </div>
+
+        <button type="button"
+          class="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-line bg-surface px-4 text-sm font-medium
+          hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-page">
+          <i data-lucide="key-round" class="h-4 w-4"></i> Continue with SSO
+        </button>
+      </form>
+
+      <p class="mt-8 flex items-center justify-center gap-1.5 font-mono text-[11px] text-ink-faint">
+        <i data-lucide="shield-check" class="h-3.5 w-3.5"></i> demo only · nothing is submitted · 15/15 skills
+      </p>
+    </div>
+  </main>
+</div>
+
+<!-- inject component classes via Tailwind @layer-like utilities on the CDN build -->
+<script>
+  // build reusable field / error classes AFTER tailwind is ready (component-library-mastery)
+  const style = document.createElement('style');
+  style.textContent = `
+    .field{ min-height:2.75rem; width:100%; border-radius:10px; border:1px solid var(--line);
+      background:var(--surface); padding-left:.75rem; padding-right:.75rem; font-size:.875rem; color:var(--ink); }
+    .field::placeholder{ color:var(--ink-faint); }
+    .field:focus{ outline:none; border-color:var(--brand); box-shadow:0 0 0 2px var(--page),0 0 0 4px var(--brand); }
+    .field.pl-9{ padding-left:2.25rem; } .field.px-9{ padding-left:2.25rem; padding-right:2.25rem; }
+    .field[aria-invalid="true"]{ border-color:var(--danger); background:var(--danger-tint); }
+    /* no display here — visibility is toggled with Tailwind .flex / .hidden to avoid a specificity clash */
+    .err{ margin-top:.375rem; align-items:center; gap:.375rem; font-size:.75rem; color:var(--danger); }
+  `;
+  document.head.appendChild(style);
+
+  const root = document.documentElement;
+  const applyTheme = d => {
+    root.classList.toggle('dark', d);
+    document.getElementById('iconSun').classList.toggle('hidden', !d);
+    document.getElementById('iconMoon').classList.toggle('hidden', d);
+  };
+
+  const $ = id => document.getElementById(id);
+  const errIcon = '<i data-lucide="circle-alert" class="h-3.5 w-3.5"></i>';
+  // field id → its error element id (password's error is "pw-err", not "password-err")
+  const ERR = { name:'name-err', email:'email-err', password:'pw-err', confirm:'confirm-err', terms:'terms-err' };
+
+  function setError(field, msgId, msg){
+    field.setAttribute('aria-invalid','true');
+    const p = $(msgId); p.innerHTML = errIcon + '<span>'+msg+'</span>';
+    p.classList.remove('hidden'); p.classList.add('flex');
+    lucide.createIcons();
+  }
+  function clearError(field, msgId){
+    field.removeAttribute('aria-invalid');
+    const p = $(msgId); p.classList.add('hidden'); p.classList.remove('flex'); p.innerHTML='';
+  }
+
+  // password strength (web-performance: tiny heuristic, no library)
+  function scorePw(v){
+    let s=0; if(v.length>=8)s++; if(v.length>=12)s++;
+    if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++; if(/\d/.test(v)&&/[^A-Za-z0-9]/.test(v))s++;
+    return Math.min(s,4);
+  }
+  const METER = [
+    {min:0,label:'—',color:null},
+    {min:1,label:'Weak',color:'var(--danger)'},
+    {min:2,label:'Fair',color:'var(--warning)'},
+    {min:3,label:'Good',color:'var(--warning)'},
+    {min:4,label:'Strong',color:'var(--success)'},
+  ];
+  const pw = $('password'), pwLabel = $('pwLabel'), segs = [...document.querySelectorAll('[data-seg]')];
+  pw.addEventListener('input', ()=>{
+    const s = pw.value ? scorePw(pw.value) : 0, m = METER[s];
+    pwLabel.textContent = m.label;
+    pwLabel.style.color = m.color || 'var(--ink-faint)';
+    segs.forEach((el,i)=> el.style.background = (i<s && m.color) ? m.color : 'var(--surface-sunken)');
+    if(pw.getAttribute('aria-invalid')) clearError(pw,'pw-err');
+  });
+
+  // show/hide password (a11y: aria-pressed + label swap)
+  $('pwToggle').addEventListener('click', ()=>{
+    const on = pw.type==='password'; pw.type = on ? 'text':'password';
+    $('pwToggle').setAttribute('aria-pressed', String(on));
+    $('pwToggle').setAttribute('aria-label', on?'Hide password':'Show password');
+    $('pwEye').classList.toggle('hidden', on); $('pwEyeOff').classList.toggle('hidden', !on);
+  });
+
+  // clear error as the user fixes a field
+  ['name','email','confirm'].forEach(id=> $(id).addEventListener('input', ()=> $(id).getAttribute('aria-invalid') && clearError($(id), ERR[id])));
+  $('terms').addEventListener('change', ()=> $('terms').getAttribute('aria-invalid') && clearError($('terms'),'terms-err'));
+
+  // submit → validate all, focus first error, or show success
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  $('form').addEventListener('submit', e=>{
+    e.preventDefault();
+    let firstBad=null;
+    const fail=(f,mid,msg)=>{ setError(f,mid,msg); if(!firstBad) firstBad=f; };
+    ['name','email','password','confirm'].forEach(id=> clearError($(id), ERR[id]));
+    clearError($('terms'),'terms-err');
+
+    const name=$('name').value.trim(), email=$('email').value.trim(), pass=$('password').value, conf=$('confirm').value;
+    if(name.length<2) fail($('name'),'name-err','Enter your full name.');
+    if(!emailRe.test(email)) fail($('email'),'email-err','Enter a valid email address.');
+    if(scorePw(pass)<2 || pass.length<8) fail($('password'),'pw-err','Use at least 8 characters with a mix of letters and numbers.');
+    if(conf!==pass || !conf) fail($('confirm'),'confirm-err','Passwords do not match.');
+    if(!$('terms').checked) fail($('terms'),'terms-err','Please accept the Terms to continue.');
+
+    if(firstBad){ firstBad.focus(); return; }
+
+    // success (demo — nothing leaves the page)
+    $('formWrap').innerHTML = `
+      <div class="rounded-xl border border-line bg-surface p-8 text-center shadow-pop">
+        <div class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-success-tint text-success">
+          <i data-lucide="circle-check" class="h-7 w-7"></i>
+        </div>
+        <h2 class="mt-5 text-xl font-bold tracking-tight">Account created</h2>
+        <p class="mt-2 text-sm text-ink-soft">Welcome aboard, <span class="font-medium text-ink">${name.split(' ')[0]||'there'}</span>.
+          We sent a confirmation to <span class="font-mono text-ink">${email}</span>.</p>
+        <button onclick="location.reload()" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-brand px-4
+          text-sm font-semibold text-on-brand hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand
+          focus-visible:ring-offset-2 focus-visible:ring-offset-page">Continue <i data-lucide="arrow-right" class="h-4 w-4"></i></button>
+        <p class="mt-4 font-mono text-[11px] text-ink-faint">demo success state · no data was sent</p>
+      </div>`;
+    lucide.createIcons();
+    $('formWrap').querySelector('button').focus();
+  });
+
+  // init
+  applyTheme(matchMedia('(prefers-color-scheme: dark)').matches);
+  $('themeBtn').addEventListener('click', ()=>applyTheme(!root.classList.contains('dark')));
+  lucide.createIcons();
+</script>
+</body>
+</html>

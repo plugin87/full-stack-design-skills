@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bootstrap 5 — Pink theme option</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+
+  /* Retint Bootstrap's primary to the brand pink #E61876 (proper BS 5.3 variable overrides) */
+  :root,[data-bs-theme=light]{
+    --bs-body-font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    --bs-primary:#E61876; --bs-primary-rgb:230,24,118;
+    --bs-link-color:#c4145f; --bs-link-color-rgb:196,20,95; --bs-link-hover-color:#94104b; --bs-link-hover-color-rgb:148,16,75;
+    --bs-border-radius:.5rem; --bs-border-radius-sm:.375rem; --bs-border-radius-lg:.75rem;
+  }
+  [data-bs-theme=dark]{
+    --bs-primary:#ff8bb6; --bs-primary-rgb:255,139,182;
+    --bs-link-color:#ffb1c8; --bs-link-color-rgb:255,177,200; --bs-link-hover-color:#ffd0de; --bs-link-hover-color-rgb:255,208,222;
+  }
+  .btn-primary{ --bs-btn-bg:#E61876; --bs-btn-border-color:#E61876; --bs-btn-hover-bg:#c4145f; --bs-btn-hover-border-color:#c4145f;
+    --bs-btn-active-bg:#b3165f; --bs-btn-active-border-color:#b3165f; --bs-btn-disabled-bg:#E61876; --bs-btn-disabled-border-color:#E61876; }
+  [data-bs-theme=dark] .btn-primary{ --bs-btn-color:#3d0a20; --bs-btn-bg:#ff8bb6; --bs-btn-border-color:#ff8bb6;
+    --bs-btn-hover-color:#3d0a20; --bs-btn-hover-bg:#ffb1c8; --bs-btn-hover-border-color:#ffb1c8; --bs-btn-active-bg:#ffb1c8; --bs-btn-active-border-color:#ffb1c8; }
+  .btn-outline-primary{ --bs-btn-color:#E61876; --bs-btn-border-color:#E61876; --bs-btn-hover-bg:#E61876; --bs-btn-hover-border-color:#E61876;
+    --bs-btn-active-bg:#E61876; --bs-btn-active-border-color:#E61876; }
+  [data-bs-theme=dark] .btn-outline-primary{ --bs-btn-color:#ff8bb6; --bs-btn-border-color:#ff8bb6; --bs-btn-hover-color:#3d0a20; --bs-btn-hover-bg:#ff8bb6; }
+  .btn-link{ --bs-btn-color:#c4145f; --bs-btn-hover-color:#94104b; }
+  .form-control:focus,.form-select:focus,.form-check-input:focus{ border-color:#f16aa0; box-shadow:0 0 0 .25rem rgba(230,24,118,.25); }
+  .form-check-input:checked{ background-color:#E61876; border-color:#E61876; }
+  .nav-pills{ --bs-nav-pills-link-active-bg:#E61876; }
+  .page-link{ --bs-pagination-color:#c4145f; --bs-pagination-hover-color:#94104b; --bs-pagination-active-bg:#E61876; --bs-pagination-active-border-color:#E61876; --bs-pagination-focus-box-shadow:0 0 0 .25rem rgba(230,24,118,.25); }
+  .progress{ --bs-progress-bar-bg:#E61876; }
+  .list-group{ --bs-list-group-active-bg:#E61876; --bs-list-group-active-border-color:#E61876; }
+  .accordion{ --bs-accordion-active-color:#8a0d43; --bs-accordion-active-bg:#fce1ec; --bs-accordion-btn-focus-box-shadow:0 0 0 .25rem rgba(230,24,118,.25); }
+  [data-bs-theme=dark] .accordion{ --bs-accordion-active-color:#ffb1c8; --bs-accordion-active-bg:#2b1521; }
+  /* Accordion chevron — token-driven, no hard-coded icon color:
+     the SVG is only a SHAPE (used as a mask); the visible color comes from CSS variables,
+     so it always follows the theme. collapsed = body text color, expanded = brand primary. */
+  .accordion-button::after{
+    background-image:none;
+    background-color:var(--bs-body-color);
+    -webkit-mask:var(--chevron-mask) center / 1.25rem no-repeat;
+            mask:var(--chevron-mask) center / 1.25rem no-repeat;
+  }
+  .accordion-button:not(.collapsed)::after{ background-image:none; background-color:var(--bs-primary); }
+  :root{ --chevron-mask:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e"); }
+  .text-primary{ color:#E61876!important } [data-bs-theme=dark] .text-primary{ color:#ff8bb6!important }
+  /* prevent icon-font FOUT: hide Bootstrap Icons until the font is ready (revealed by JS, fallback timeout) */
+  .bi{ visibility:hidden; } html.fonts-ready .bi{ visibility:visible; }
+  .brand-mark{ width:34px;height:34px;border-radius:.5rem;display:inline-grid;place-items:center;color:#fff;background:linear-gradient(135deg,#E61876 0%,#94104B 100%) }
+  .sec-label{ font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--bs-secondary-color);font-weight:600 }
+  section{ scroll-margin-top:5rem }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-semibold" href="#"><span class="brand-mark"><i class="bi bi-grid-3x3-gap-fill"></i></span> design-system</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link active" href="#buttons">Buttons</a></li>
+        <li class="nav-item"><a class="nav-link" href="#forms">Forms</a></li>
+        <li class="nav-item"><a class="nav-link" href="#feedback">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="#components">Components</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2">
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i></button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
+            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i>Sign out</a></li>
+          </ul>
+        </div>
+        <button id="themeBtn" class="btn btn-sm btn-outline-secondary" aria-label="Toggle theme"><i id="themeIcon" class="bi bi-moon-stars"></i></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4" style="max-width:960px">
+
+  <header class="mb-2">
+    <p class="sec-label text-primary mb-1">Bootstrap 5.3 · seed #E61876</p>
+    <h1 class="fw-bold">A Bootstrap option for the design system</h1>
+    <p class="lead text-secondary mb-0">Real Bootstrap 5.3 with the primary retinted to the brand pink, Bootstrap Icons, and native light/dark (<code>data-bs-theme</code>).</p>
+  </header>
+
+  <!-- BUTTONS -->
+  <section id="buttons" class="mt-5">
+    <p class="sec-label mb-1">Components</p>
+    <h2 class="h4 mb-3">Buttons</h2>
+    <div class="card"><div class="card-body d-flex flex-wrap gap-2 align-items-center">
+      <button class="btn btn-primary">Primary</button>
+      <button class="btn btn-secondary">Secondary</button>
+      <button class="btn btn-success">Success</button>
+      <button class="btn btn-danger">Danger</button>
+      <button class="btn btn-warning">Warning</button>
+      <button class="btn btn-outline-primary">Outline</button>
+      <button class="btn btn-link">Link</button>
+      <button class="btn btn-primary" disabled>Disabled</button>
+      <span class="vr mx-1"></span>
+      <button class="btn btn-primary btn-sm">Small</button>
+      <button class="btn btn-primary">Default</button>
+      <button class="btn btn-primary btn-lg">Large</button>
+      <button class="btn btn-primary"><i class="bi bi-upload me-1"></i> With icon</button>
+    </div></div>
+  </section>
+
+  <!-- FORMS -->
+  <section id="forms" class="mt-5">
+    <p class="sec-label mb-1">Components</p>
+    <h2 class="h4 mb-3">Forms</h2>
+    <div class="card"><div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="b-name" class="form-label">Full name</label>
+          <input type="text" class="form-control" id="b-name" placeholder="Ada Lovelace">
+          <div class="form-text">Help text sits below the field.</div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="b-email" placeholder="you@company.com">
+            <label for="b-email">Email (floating label)</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="b-pw" class="form-label">Password</label>
+          <input type="password" class="form-control is-invalid" id="b-pw" value="123">
+          <div class="invalid-feedback"><i class="bi bi-exclamation-circle me-1"></i>At least 8 characters.</div>
+        </div>
+        <div class="col-md-6">
+          <label for="b-role" class="form-label">Role</label>
+          <select class="form-select" id="b-role"><option>Designer</option><option>Developer</option><option>Full-stack</option></select>
+        </div>
+        <div class="col-12 d-flex flex-wrap gap-4">
+          <div class="form-check"><input class="form-check-input" type="checkbox" id="b-c1" checked><label class="form-check-label" for="b-c1">Email me updates</label></div>
+          <div class="form-check"><input class="form-check-input" type="radio" name="b-r" id="b-r1" checked><label class="form-check-label" for="b-r1">Option A</label></div>
+          <div class="form-check form-switch"><input class="form-check-input" type="checkbox" role="switch" id="b-s1" checked><label class="form-check-label" for="b-s1">Two-factor auth</label></div>
+        </div>
+        <div class="col-12"><button class="btn btn-primary"><i class="bi bi-person-plus me-1"></i> Create account</button></div>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section id="feedback" class="mt-5">
+    <p class="sec-label mb-1">Components</p>
+    <h2 class="h4 mb-3">Feedback</h2>
+    <div class="alert alert-success d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill"></i><div><strong>Success.</strong> Your changes are live.</div></div>
+    <div class="alert alert-warning d-flex align-items-center gap-2"><i class="bi bi-exclamation-triangle-fill"></i><div><strong>Warning.</strong> Review before you continue.</div></div>
+    <div class="alert alert-danger d-flex align-items-center gap-2"><i class="bi bi-x-circle-fill"></i><div><strong>Error.</strong> Something needs fixing.</div></div>
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+      <span class="badge text-bg-primary">Primary</span>
+      <span class="badge text-bg-success">Passing</span>
+      <span class="badge text-bg-warning">Review</span>
+      <span class="badge rounded-pill text-bg-secondary">Draft</span>
+      <span class="badge text-bg-primary"><i class="bi bi-star-fill me-1"></i>Beta</span>
+    </div>
+    <div class="row g-3 align-items-center">
+      <div class="col-md-8">
+        <div class="progress" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width:72%">72%</div></div>
+      </div>
+      <div class="col-md-4 d-flex align-items-center gap-3">
+        <div class="spinner-border text-primary flex-shrink-0" role="status"><span class="visually-hidden">Loading…</span></div>
+        <div class="toast show" role="alert"><div class="toast-body d-flex align-items-center gap-2"><i class="bi bi-info-circle text-primary"></i> Saved just now</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="mt-5">
+    <p class="sec-label mb-1">Components</p>
+    <h2 class="h4 mb-3">Cards</h2>
+    <div class="row g-3">
+      <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h3 class="h6 card-title"><i class="bi bi-box-seam text-primary me-1"></i> Component</h3>
+        <p class="card-text text-secondary small">Reusable, documented, versioned.</p>
+        <a href="#" class="card-link">View docs <i class="bi bi-arrow-right"></i></a>
+      </div></div></div>
+      <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h3 class="h6 card-title"><i class="bi bi-speedometer2 text-primary me-1"></i> Performant</h3>
+        <p class="card-text text-secondary small">42kb gzipped, fast by default.</p>
+        <a href="#" class="card-link">Benchmarks <i class="bi bi-arrow-right"></i></a>
+      </div></div></div>
+      <div class="col-md-4"><div class="card h-100 text-bg-primary"><div class="card-body">
+        <h3 class="h6 card-title"><i class="bi bi-palette me-1"></i> Themeable</h3>
+        <p class="card-text small opacity-75">One token layer, light + dark.</p>
+        <a href="#" class="card-link text-white">Tokens <i class="bi bi-arrow-right"></i></a>
+      </div></div></div>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section id="components" class="mt-5">
+    <p class="sec-label mb-1">Components</p>
+    <h2 class="h4 mb-3">Navigation &amp; more</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="small fw-semibold mb-2">List group</p>
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active"><i class="bi bi-house me-2"></i>Overview</a>
+          <a href="#" class="list-group-item list-group-item-action"><i class="bi bi-box me-2"></i>Components</a>
+          <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"><span><i class="bi bi-bell me-2"></i>Alerts</span><span class="badge text-bg-primary rounded-pill">3</span></a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <p class="small fw-semibold mb-2">Nav pills</p>
+        <ul class="nav nav-pills mb-3">
+          <li class="nav-item"><a class="nav-link active" href="#">Active</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Link</a></li>
+        </ul>
+        <p class="small fw-semibold mb-2">Pagination</p>
+        <nav><ul class="pagination">
+          <li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
+        </ul></nav>
+      </div>
+      <div class="col-md-6">
+        <p class="small fw-semibold mb-2">Breadcrumb</p>
+        <nav><ol class="breadcrumb"><li class="breadcrumb-item"><a href="#">Home</a></li><li class="breadcrumb-item"><a href="#">Docs</a></li><li class="breadcrumb-item active">Buttons</li></ol></nav>
+        <p class="small fw-semibold mb-2 mt-2">Overlays</p>
+        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#demoModal"><i class="bi bi-window me-1"></i> Open modal</button>
+      </div>
+      <div class="col-md-6">
+        <p class="small fw-semibold mb-2">Accordion</p>
+        <div class="accordion" id="acc">
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#a1">Tokens</button></h2><div id="a1" class="accordion-collapse collapse" data-bs-parent="#acc"><div class="accordion-body small text-secondary">CSS variables drive theming, light + dark.</div></div></div>
+          <div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#a2">Accessibility</button></h2><div id="a2" class="accordion-collapse collapse" data-bs-parent="#acc"><div class="accordion-body small text-secondary">WCAG AA+, visible focus, keyboard-first.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="text-secondary small mt-5 mb-0">Bootstrap 5.3 · Bootstrap Icons · primary #E61876 · light + dark · a framework alternative to the flat token system.</p>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="demoModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content">
+  <div class="modal-header"><h5 class="modal-title">Confirm publish</h5><button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+  <div class="modal-body">This publishes the component library to the shared registry.</div>
+  <div class="modal-footer"><button class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary"><i class="bi bi-upload me-1"></i>Publish</button></div>
+</div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const root=document.documentElement, ti=document.getElementById('themeIcon');
+  const apply=d=>{ root.setAttribute('data-bs-theme', d?'dark':'light'); ti.className = d?'bi bi-sun':'bi bi-moon-stars'; };
+  apply(matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeBtn').addEventListener('click',()=>apply(root.getAttribute('data-bs-theme')!=='dark'));
+  // reveal icons only once fonts are ready (fallback after 2.5s so they never stay hidden)
+  Promise.race([ (document.fonts&&document.fonts.ready)||Promise.resolve(), new Promise(r=>setTimeout(r,2500)) ]).then(()=>root.classList.add('fonts-ready'));
+</script>
+</body>
+</html>

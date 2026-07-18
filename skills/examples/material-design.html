@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Material Design 3 — Pink theme option</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block" rel="stylesheet">
+
+<style>
+  /* ===== Material 3 color roles — seeded from #E61876 (pink) ===== */
+  :root{
+    --primary:#b3165f; --on-primary:#ffffff; --primary-container:#ffd9e5; --on-primary-container:#3f0021;
+    --secondary:#74565f; --on-secondary:#ffffff; --secondary-container:#ffd9e5; --on-secondary-container:#2b151d;
+    --tertiary:#7f5539; --on-tertiary:#ffffff; --tertiary-container:#ffdcc1; --on-tertiary-container:#2e1500;
+    --error:#ba1a1a; --on-error:#ffffff; --error-container:#ffdad6; --on-error-container:#410002;
+    --surface:#fff8f8; --surface-dim:#e7d6da; --surface-bright:#fff8f8;
+    --sc-lowest:#ffffff; --sc-low:#fdf0f3; --sc:#f8eaee; --sc-high:#f2e5e9; --sc-highest:#ecdfe3;
+    --on-surface:#22191c; --on-surface-variant:#514347; --outline:#837377; --outline-variant:#d5c2c7;
+    --inverse-surface:#372e31; --inverse-on-surface:#fdedf0; --inverse-primary:#ffb1c8;
+    --shape-sm:8px; --shape-md:12px; --shape-lg:16px; --shape-xl:28px;
+    --e1:0 1px 2px rgba(0,0,0,.30), 0 1px 3px 1px rgba(0,0,0,.15);
+    --e2:0 1px 2px rgba(0,0,0,.30), 0 2px 6px 2px rgba(0,0,0,.15);
+    --e3:0 1px 3px rgba(0,0,0,.30), 0 4px 8px 3px rgba(0,0,0,.15);
+  }
+  :root.dark{
+    --primary:#ffb1c8; --on-primary:#5e1133; --primary-container:#8e1152; --on-primary-container:#ffd9e5;
+    --secondary:#e3bdc6; --on-secondary:#422931; --secondary-container:#5a3f47; --on-secondary-container:#ffd9e5;
+    --tertiary:#f1bd94; --on-tertiary:#48290c; --tertiary-container:#623f20; --on-tertiary-container:#ffdcc1;
+    --error:#ffb4ab; --on-error:#690005; --error-container:#93000a; --on-error-container:#ffdad6;
+    --surface:#191113; --surface-dim:#191113; --surface-bright:#403739;
+    --sc-lowest:#130c0e; --sc-low:#22191c; --sc:#261d20; --sc-high:#312529; --sc-highest:#3d2f33;
+    --on-surface:#efdfe2; --on-surface-variant:#d5c2c7; --outline:#9e8c91; --outline-variant:#514347;
+    --inverse-surface:#efdfe2; --inverse-on-surface:#372e31; --inverse-primary:#b3165f;
+    --e1:0 1px 2px rgba(0,0,0,.55), 0 1px 3px 1px rgba(0,0,0,.30);
+    --e2:0 1px 2px rgba(0,0,0,.55), 0 2px 6px 2px rgba(0,0,0,.30);
+    --e3:0 1px 3px rgba(0,0,0,.55), 0 4px 8px 3px rgba(0,0,0,.30);
+  }
+  *{box-sizing:border-box}
+  body{ margin:0; background:var(--surface); color:var(--on-surface);
+    font-family:'Roboto',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  .material-symbols-outlined{ font-size:20px; line-height:1; vertical-align:middle; }
+  /* prevent icon-font FOUT: hide ligatures until the symbols font is ready (revealed by JS, with a fallback timeout) */
+  .material-symbols-outlined{ visibility:hidden; }
+  html.fonts-ready .material-symbols-outlined{ visibility:visible; }
+
+  /* state layer (M3 hover/focus/press overlays) */
+  .state{ position:relative; overflow:hidden; }
+  .state::after{ content:""; position:absolute; inset:0; background:currentColor; opacity:0; transition:opacity .12s; pointer-events:none; }
+  .state:hover::after{ opacity:.08 } .state:focus-visible::after{ opacity:.12 } .state:active::after{ opacity:.12 }
+  :focus-visible{ outline:2px solid var(--primary); outline-offset:2px }
+
+  /* ===== Buttons (pill) ===== */
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; height:40px; padding:0 24px;
+    border:none; border-radius:20px; font:500 14px/1 'Roboto',sans-serif; letter-spacing:.1px; cursor:pointer; }
+  .btn .material-symbols-outlined{ font-size:18px }
+  .btn.icon-lead{ padding-left:16px }
+  .btn-filled{ background:var(--primary); color:var(--on-primary) }
+  .btn-tonal{ background:var(--secondary-container); color:var(--on-secondary-container) }
+  .btn-elevated{ background:var(--sc-low); color:var(--primary); box-shadow:var(--e1) }
+  .btn-outlined{ background:transparent; color:var(--primary); border:1px solid var(--outline) }
+  .btn-text{ background:transparent; color:var(--primary); padding:0 12px }
+  .btn:disabled{ background:color-mix(in srgb, var(--on-surface) 12%, transparent); color:color-mix(in srgb, var(--on-surface) 38%, transparent); box-shadow:none; cursor:not-allowed; border:none }
+  .fab{ display:inline-flex; align-items:center; gap:12px; height:56px; padding:0 16px; min-width:56px; justify-content:center;
+    border:none; border-radius:16px; background:var(--primary-container); color:var(--on-primary-container); box-shadow:var(--e3); cursor:pointer; font:500 14px 'Roboto' }
+  .icon-btn{ display:inline-grid; place-items:center; width:40px; height:40px; border-radius:50%; border:none; background:transparent; color:var(--on-surface-variant); cursor:pointer }
+  .icon-btn.filled{ background:var(--primary); color:var(--on-primary) }
+
+  /* ===== Text fields ===== */
+  .tf{ position:relative; }
+  .tf input{ width:100%; height:56px; font:400 16px 'Roboto'; color:var(--on-surface); }
+  .tf.filled input{ background:var(--sc-highest); border:none; border-bottom:1px solid var(--on-surface-variant);
+    border-radius:4px 4px 0 0; padding:24px 16px 8px; }
+  .tf.filled input:focus{ outline:none; border-bottom:2px solid var(--primary); padding-bottom:7px }
+  .tf.outlined input{ background:transparent; border:1px solid var(--outline); border-radius:4px; padding:16px; }
+  .tf.outlined input:focus{ outline:none; border:2px solid var(--primary); padding:15px }
+  .tf label{ position:absolute; left:16px; top:17px; color:var(--on-surface-variant); font:400 16px 'Roboto'; pointer-events:none; transition:.12s; }
+  .tf.filled input:focus + label, .tf.filled input:not(:placeholder-shown) + label{ top:8px; font-size:12px }
+  .tf.outlined label{ left:12px; padding:0 4px; background:var(--surface) }
+  .tf.outlined input:focus + label, .tf.outlined input:not(:placeholder-shown) + label{ top:-8px; font-size:12px }
+  .tf input:focus + label{ color:var(--primary) }
+  .tf.error input{ border-color:var(--error) } .tf.error input:focus{ border-color:var(--error) }
+  .tf.error label, .tf.error input:focus + label{ color:var(--error) }
+  .support{ display:flex; gap:6px; align-items:center; margin:4px 16px 0; font:400 12px 'Roboto'; color:var(--on-surface-variant) }
+  .support.err{ color:var(--error) }
+
+  /* ===== Selection ===== */
+  .switch{ appearance:none; width:52px; height:32px; border-radius:16px; background:var(--sc-highest);
+    border:2px solid var(--outline); position:relative; cursor:pointer; transition:.2s; flex:none }
+  .switch::before{ content:""; position:absolute; left:6px; top:6px; width:16px; height:16px; border-radius:50%; background:var(--outline); transition:.2s }
+  .switch:checked{ background:var(--primary); border-color:var(--primary) }
+  .switch:checked::before{ left:24px; top:2px; width:24px; height:24px; background:var(--on-primary) }
+  .cbx{ width:18px; height:18px; accent-color:var(--primary) }
+  .chip{ display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 16px; border-radius:8px;
+    border:1px solid var(--outline-variant); background:transparent; color:var(--on-surface-variant); font:500 14px 'Roboto'; cursor:pointer }
+  .chip .material-symbols-outlined{ font-size:18px }
+  .chip.sel{ background:var(--secondary-container); color:var(--on-secondary-container); border-color:transparent; padding-left:8px }
+
+  /* ===== Cards ===== */
+  .card{ border-radius:var(--shape-md); padding:16px; }
+  .card-elevated{ background:var(--sc-low); box-shadow:var(--e1) }
+  .card-filled{ background:var(--sc-highest) }
+  .card-outlined{ background:var(--surface); border:1px solid var(--outline-variant) }
+
+  /* ===== misc ===== */
+  .appbar{ display:flex; align-items:center; gap:8px; height:64px; padding:0 12px; background:var(--surface); color:var(--on-surface) }
+  .snackbar{ display:flex; align-items:center; gap:16px; background:var(--inverse-surface); color:var(--inverse-on-surface);
+    border-radius:4px; padding:14px 16px; box-shadow:var(--e3); font:400 14px 'Roboto' }
+  .snackbar button{ background:none; border:none; color:var(--inverse-primary); font:500 14px 'Roboto'; cursor:pointer }
+  .dialog{ background:var(--sc-high); color:var(--on-surface); border-radius:var(--shape-xl); padding:24px; box-shadow:var(--e3); max-width:360px }
+  .role{ border-radius:12px; padding:14px; font:500 13px 'Roboto' }
+  .divider{ height:1px; background:var(--outline-variant) }
+  h1,h2,h3{ margin:0 }
+  .wrap{ max-width:1000px; margin:0 auto; padding:24px 24px 80px }
+  .sec{ margin-top:40px }
+  .sec > h2{ font:400 22px 'Roboto'; letter-spacing:0 }
+  .sec > .lbl{ font:500 11px 'Roboto'; letter-spacing:.5px; text-transform:uppercase; color:var(--primary); margin-bottom:6px }
+  .surface-card{ background:var(--sc-low); border-radius:var(--shape-lg); padding:20px; }
+</style>
+</head>
+
+<body>
+
+<!-- Top app bar -->
+<header class="appbar" style="box-shadow:var(--e1)">
+  <button class="icon-btn state" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  <h1 style="font:400 22px 'Roboto'; flex:1">Material 3 · Pink</h1>
+  <button class="icon-btn state" aria-label="Search"><span class="material-symbols-outlined">search</span></button>
+  <button id="themeBtn" class="icon-btn state" aria-label="Toggle theme"><span id="themeIcon" class="material-symbols-outlined">dark_mode</span></button>
+  <button class="icon-btn filled state" aria-label="Account" style="border-radius:50%"><span class="material-symbols-outlined">person</span></button>
+</header>
+
+<div class="wrap">
+
+  <p style="font:500 11px 'Roboto'; letter-spacing:.5px; text-transform:uppercase; color:var(--primary)">Material Design 3 · seed #E61876</p>
+  <h1 style="font:400 36px/1.15 'Roboto'; margin:6px 0 8px">A Material option for the design system</h1>
+  <p style="font:400 16px 'Roboto'; color:var(--on-surface-variant); max-width:60ch; margin:0">
+    The same brand pink expressed through Material 3: tonal color roles, elevation, Roboto, Material Symbols, state layers, and pill-shaped buttons. Toggle light/dark from the app bar.</p>
+
+  <!-- COLOR ROLES -->
+  <section class="sec">
+    <p class="lbl">Foundations</p>
+    <h2>Color roles</h2>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:14px">
+      <div class="role" style="background:var(--primary);color:var(--on-primary)">Primary</div>
+      <div class="role" style="background:var(--primary-container);color:var(--on-primary-container)">Primary container</div>
+      <div class="role" style="background:var(--secondary);color:var(--on-secondary)">Secondary</div>
+      <div class="role" style="background:var(--secondary-container);color:var(--on-secondary-container)">Secondary container</div>
+      <div class="role" style="background:var(--tertiary);color:var(--on-tertiary)">Tertiary</div>
+      <div class="role" style="background:var(--tertiary-container);color:var(--on-tertiary-container)">Tertiary container</div>
+      <div class="role" style="background:var(--error);color:var(--on-error)">Error</div>
+      <div class="role" style="background:var(--error-container);color:var(--on-error-container)">Error container</div>
+      <div class="role" style="background:var(--sc-highest);color:var(--on-surface)">Surface highest</div>
+      <div class="role" style="background:var(--surface);color:var(--on-surface);border:1px solid var(--outline-variant)">Surface</div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="sec">
+    <p class="lbl">Foundations</p>
+    <h2>Typography · Roboto</h2>
+    <div class="surface-card" style="margin-top:14px; display:grid; gap:10px">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px"><span style="font:400 45px 'Roboto'">Display</span><span style="font:400 12px 'Roboto'; color:var(--on-surface-variant)">display · 45</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px"><span style="font:400 28px 'Roboto'">Headline</span><span style="font:400 12px 'Roboto'; color:var(--on-surface-variant)">headline · 28</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px"><span style="font:500 16px 'Roboto'">Title</span><span style="font:400 12px 'Roboto'; color:var(--on-surface-variant)">title · 16 · 500</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px"><span style="font:400 16px 'Roboto'">Body text</span><span style="font:400 12px 'Roboto'; color:var(--on-surface-variant)">body · 16</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:16px"><span style="font:500 14px 'Roboto'; letter-spacing:.1px">LABEL</span><span style="font:400 12px 'Roboto'; color:var(--on-surface-variant)">label · 14 · 500</span></div>
+    </div>
+  </section>
+
+  <!-- BUTTONS -->
+  <section class="sec">
+    <p class="lbl">Components</p>
+    <h2>Buttons — all types</h2>
+    <div class="surface-card" style="margin-top:14px; display:flex; flex-wrap:wrap; gap:12px; align-items:center">
+      <button class="btn btn-elevated state">Elevated</button>
+      <button class="btn btn-filled state icon-lead"><span class="material-symbols-outlined">add</span>Filled</button>
+      <button class="btn btn-tonal state">Filled tonal</button>
+      <button class="btn btn-outlined state">Outlined</button>
+      <button class="btn btn-text state">Text</button>
+      <button class="btn btn-filled" disabled>Disabled</button>
+      <span class="divider" style="width:1px; height:40px"></span>
+      <button class="fab state"><span class="material-symbols-outlined" style="font-size:24px">edit</span></button>
+      <button class="fab state"><span class="material-symbols-outlined" style="font-size:24px">add</span>Extended</button>
+      <button class="icon-btn filled state" aria-label="Favorite"><span class="material-symbols-outlined">favorite</span></button>
+      <button class="icon-btn state" aria-label="More"><span class="material-symbols-outlined">more_vert</span></button>
+    </div>
+  </section>
+
+  <!-- TEXT FIELDS -->
+  <section class="sec">
+    <p class="lbl">Components</p>
+    <h2>Text fields</h2>
+    <div class="surface-card" style="margin-top:14px; display:grid; gap:22px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+      <div>
+        <div class="tf filled"><input id="f1" type="text" placeholder=" "><label for="f1">Filled label</label></div>
+        <div class="support"><span class="material-symbols-outlined" style="font-size:16px">info</span> Supporting text</div>
+      </div>
+      <div>
+        <div class="tf outlined"><input id="f2" type="email" placeholder=" "><label for="f2">Outlined label</label></div>
+        <div class="support"><span class="material-symbols-outlined" style="font-size:16px">info</span> we@company.com</div>
+      </div>
+      <div>
+        <div class="tf outlined error"><input id="f3" type="password" value="123" placeholder=" "><label for="f3">Password</label></div>
+        <div class="support err"><span class="material-symbols-outlined" style="font-size:16px">error</span> At least 8 characters</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTION -->
+  <section class="sec">
+    <p class="lbl">Components</p>
+    <h2>Selection</h2>
+    <div class="surface-card" style="margin-top:14px; display:flex; flex-wrap:wrap; gap:28px; align-items:center">
+      <label style="display:flex; align-items:center; gap:12px; font:400 16px 'Roboto'"><input class="switch" type="checkbox" checked> Wi-Fi</label>
+      <label style="display:flex; align-items:center; gap:10px; font:400 16px 'Roboto'"><input class="cbx" type="checkbox" checked> Checkbox</label>
+      <label style="display:flex; align-items:center; gap:10px; font:400 16px 'Roboto'"><input class="cbx" type="radio" name="r" checked> Radio</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <button class="chip state">Assist</button>
+        <button class="chip sel state"><span class="material-symbols-outlined">done</span>Filter</button>
+        <button class="chip state">Input<span class="material-symbols-outlined">close</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARDS -->
+  <section class="sec">
+    <p class="lbl">Components</p>
+    <h2>Cards</h2>
+    <div style="margin-top:14px; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr))">
+      <div class="card card-elevated">
+        <h3 style="font:400 16px 'Roboto'; margin-bottom:4px">Elevated</h3>
+        <p style="font:400 14px 'Roboto'; color:var(--on-surface-variant); margin:0 0 14px">Surface + level-1 shadow.</p>
+        <button class="btn btn-text state" style="height:36px">Action</button>
+      </div>
+      <div class="card card-filled">
+        <h3 style="font:400 16px 'Roboto'; margin-bottom:4px">Filled</h3>
+        <p style="font:400 14px 'Roboto'; color:var(--on-surface-variant); margin:0 0 14px">Highest surface tone, no shadow.</p>
+        <button class="btn btn-text state" style="height:36px">Action</button>
+      </div>
+      <div class="card card-outlined">
+        <h3 style="font:400 16px 'Roboto'; margin-bottom:4px">Outlined</h3>
+        <p style="font:400 14px 'Roboto'; color:var(--on-surface-variant); margin:0 0 14px">Outline-variant border.</p>
+        <button class="btn btn-text state" style="height:36px">Action</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELEVATION -->
+  <section class="sec">
+    <p class="lbl">Foundations</p>
+    <h2>Elevation</h2>
+    <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:20px">
+      <div style="width:120px; height:80px; border-radius:12px; background:var(--sc-low); display:grid; place-items:center; font:400 12px 'Roboto'; color:var(--on-surface-variant)">Level 0</div>
+      <div style="width:120px; height:80px; border-radius:12px; background:var(--sc-low); box-shadow:var(--e1); display:grid; place-items:center; font:400 12px 'Roboto'; color:var(--on-surface-variant)">Level 1</div>
+      <div style="width:120px; height:80px; border-radius:12px; background:var(--sc-low); box-shadow:var(--e2); display:grid; place-items:center; font:400 12px 'Roboto'; color:var(--on-surface-variant)">Level 2</div>
+      <div style="width:120px; height:80px; border-radius:12px; background:var(--sc-low); box-shadow:var(--e3); display:grid; place-items:center; font:400 12px 'Roboto'; color:var(--on-surface-variant)">Level 3</div>
+    </div>
+  </section>
+
+  <!-- SNACKBAR + DIALOG -->
+  <section class="sec">
+    <p class="lbl">Components</p>
+    <h2>Snackbar &amp; dialog</h2>
+    <div style="margin-top:14px; display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); align-items:start">
+      <div class="snackbar"><span style="flex:1">Account created.</span><button class="state" style="border-radius:4px; padding:6px 8px">Undo</button></div>
+      <div class="dialog">
+        <span class="material-symbols-outlined" style="color:var(--primary); font-size:24px">delete</span>
+        <h3 style="font:400 24px 'Roboto'; margin:12px 0 8px">Delete component?</h3>
+        <p style="font:400 14px 'Roboto'; color:var(--on-surface-variant); margin:0 0 20px">This removes it from the shared registry. Teammates lose it on next install.</p>
+        <div style="display:flex; justify-content:flex-end; gap:8px">
+          <button class="btn btn-text state" style="height:40px">Cancel</button>
+          <button class="btn btn-filled state" style="height:40px">Delete</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p style="margin-top:44px; font:400 12px 'Roboto'; color:var(--on-surface-variant)">Material Design 3 · Roboto · Material Symbols · seed #E61876 · light + dark · a stylistic alternative to the flat token system.</p>
+</div>
+
+<script>
+  const root=document.documentElement, ti=document.getElementById('themeIcon');
+  const apply=d=>{ root.classList.toggle('dark',d); ti.textContent=d?'light_mode':'dark_mode'; };
+  apply(matchMedia('(prefers-color-scheme: dark)').matches);
+  document.getElementById('themeBtn').addEventListener('click',()=>apply(!root.classList.contains('dark')));
+  // reveal icons only once fonts are ready (fallback after 2.5s so they never stay hidden)
+  const revealIcons=()=>root.classList.add('fonts-ready');
+  Promise.race([ (document.fonts&&document.fonts.ready)||Promise.resolve(), new Promise(r=>setTimeout(r,2500)) ]).then(revealIcons);
+</script>
+</body>
+</html>
